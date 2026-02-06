@@ -38,16 +38,16 @@ export const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg">
+    <div className="min-h-screen bg-gradient-to-b from-cyan-50 via-blue-50 to-white">
       <div className="max-w-2xl mx-auto px-4 py-20">
-        <h1 className="text-4xl font-bold text-navy mb-4 text-center">Contact Us</h1>
-        <p className="text-gray-600 text-center mb-12">
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent text-center mb-4">Contact Us</h1>
+        <p className="text-gray-600 text-center mb-12 text-lg font-medium">
           Have questions? Send us a message and we'll get back to you soon!
         </p>
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-lg shadow-lg p-8 space-y-6"
+          className="bg-white rounded-xl shadow-2xl p-8 space-y-6 border border-blue-200"
         >
           {sent && (
             <div className="bg-green-100 text-green-700 p-3 rounded">

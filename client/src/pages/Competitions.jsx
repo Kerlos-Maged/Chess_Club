@@ -1,477 +1,476 @@
-import React, { useState, useEffect } from 'react';
-import { fakeProfiles } from '../data/fakeData';
-import { useScrollAnimation } from '../hooks/useScrollAnimation';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import { ChessAnimation } from '../components/Common';
 
 export const Competitions = () => {
-  const competitionsRef = useScrollAnimation();
+  const navigate = useNavigate();
+  const { user, userType, token } = useContext(AuthContext);
   const [tournaments, setTournaments] = useState([]);
-  const [selectedTournament, setSelectedTournament] = useState(null);
-  const [showBracket, setShowBracket] = useState(false);
+  const [registeredTournaments, setRegisteredTournaments] = useState([]);
+  const [hoveredCard, setHoveredCard] = useState(null);
+
+  // Image placeholder component
+  const ChessImagePlaceholder = ({ icon, text }) => (
+    <div className="w-full h-full bg-gradient-to-br from-amber-700/40 via-slate-800/30 to-slate-900/40 flex items-center justify-center relative overflow-hidden">
+      <div className="absolute inset-0 opacity-20">
+        <div className="w-full h-full flex items-center justify-center text-9xl animate-pulse">{icon}</div>
+      </div>
+      <div className="text-center z-10">
+        <div className="text-8xl mb-4 animate-bounce">{icon}</div>
+        <p className="text-white font-bold text-2xl drop-shadow-lg">{text}</p>
+      </div>
+    </div>
+  );
 
   useEffect(() => {
-    // Load tournaments from localStorage or create defaults
+    loadTournaments();
+  }, [user]);
+
+  const loadTournaments = () => {
     const saved = localStorage.getItem('tournaments');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
         setTournaments(parsed);
       } catch (error) {
-        console.error('Error parsing tournaments from localStorage:', error);
-        initializeDefaultTournaments();
+        console.error('Error parsing tournaments:', error);
+        setTournaments([]);
       }
-    } else {
-      initializeDefaultTournaments();
     }
-  }, []);
 
-  const initializeDefaultTournaments = () => {
-    const defaults = [
-      {
-        _id: '1',
-        name: 'Spring Championship 2024',
-        description: 'Main tournament of the season',
-        maxParticipants: 8,
-        participants: fakeProfiles.slice(0, 6),
-        rounds: [],
-        currentRound: 0,
-        status: 'registration',
-        startDate: new Date(Date.now() + 10 * 86400000),
-        winner: null,
-        format: 'single-elimination',
-      },
-      {
-        _id: '2',
-        name: 'Rapid Tournament',
-        description: 'Quick games - 10 minutes per side',
-        maxParticipants: 4,
-        participants: [],
-        rounds: [],
-        currentRound: 0,
-        status: 'upcoming',
-        startDate: new Date(Date.now() + 5 * 86400000),
-        winner: null,
-        format: 'single-elimination',
-      },
-    ];
-    setTournaments(defaults);
+    if (user && userType === 'member') {
+      const registered = user.registeredTournaments || [];
+      setRegisteredTournaments(registered);
+    }
   };
 
-  const startTournament = (tournamentId) => {
-    const tournament = tournaments.find(t => t._id === tournamentId);
-    if (tournament.participants.length < 2) {
-      alert('Need at least 2 participants to start tournament');
+  const handleRegister = (tournamentId) => {
+    if (!user || userType !== 'member') {
+      navigate('/member-auth', { state: { from: location } });
       return;
     }
 
-    const updatedTournament = {
-      ...tournament,
-      status: 'in-progress',
-      rounds: generateRounds(tournament.participants),
-      currentRound: 1,
-    };
+    const tournament = tournaments.find(t => t._id === tournamentId);
+    if (!tournament) return;
 
-    setTournaments(tournaments.map(t => t._id === tournamentId ? updatedTournament : t));
-    setSelectedTournament(updatedTournament);
-    setShowBracket(true);
-  };
-
-  const generateRounds = (participants) => {
-    if (participants.length === 0) return [];
-
-    const shuffled = [...participants].sort(() => Math.random() - 0.5);
-    const rounds = [];
-
-    // First round - Round 1
-    const firstRound = {
-      roundNumber: 1,
-      name: 'Round 1',
-      matches: [],
-    };
-
-    for (let i = 0; i < shuffled.length; i += 2) {
-      if (i + 1 < shuffled.length) {
-        firstRound.matches.push({
-          id: `${Date.now()}-${i}`,
-          player1: shuffled[i],
-          player2: shuffled[i + 1],
-          winner: null,
-          status: 'pending',
-        });
-      }
-    }
-    rounds.push(firstRound);
-
-    // Generate remaining rounds
-    let remainingParticipants = firstRound.matches.length;
-    let roundNumber = 2;
-
-    while (remainingParticipants > 1) {
-      const round = {
-        roundNumber,
-        name: getRoundName(remainingParticipants),
-        matches: [],
-      };
-
-      for (let i = 0; i < remainingParticipants; i += 2) {
-        if (i + 1 < remainingParticipants) {
-          round.matches.push({
-            id: `round${roundNumber}-match${i}`,
-            player1: null,
-            player2: null,
-            winner: null,
-            status: 'waiting',
-          });
-        }
-      }
-
-      rounds.push(round);
-      remainingParticipants = round.matches.length;
-      roundNumber++;
+    if ((tournament.participants || []).find(p => p._id === user._id)) {
+      alert('✓ You are already registered for this tournament!');
+      return;
     }
 
-    return rounds;
-  };
-
-  const getRoundName = (participantCount) => {
-    if (participantCount === 2) return 'Final';
-    if (participantCount === 4) return 'Semi-Final';
-    if (participantCount === 8) return 'Quarter-Final';
-    return `Round ${participantCount}`;
-  };
-
-  const setMatchWinner = (roundIndex, matchIndex, winner) => {
-    if (!selectedTournament) return;
-
-    const updatedTournament = { ...selectedTournament };
-    const round = updatedTournament.rounds[roundIndex];
-    const match = round.matches[matchIndex];
-
-    match.winner = winner;
-    match.status = 'completed';
-
-    // Advance winner to next round
-    if (roundIndex + 1 < updatedTournament.rounds.length) {
-      const nextRound = updatedTournament.rounds[roundIndex + 1];
-      const playerSlot = matchIndex < 2 ? 'player1' : 'player2';
-      
-      for (let i = 0; i < nextRound.matches.length; i++) {
-        if (!nextRound.matches[i].player1) {
-          nextRound.matches[i].player1 = winner;
-          break;
-        } else if (!nextRound.matches[i].player2) {
-          nextRound.matches[i].player2 = winner;
-          break;
-        }
-      }
-      nextRound.matches = nextRound.matches.map(m => {
-        if (m.player1 && m.player2) return { ...m, status: 'ready' };
-        return m;
-      });
-    } else {
-      updatedTournament.winner = winner;
-      updatedTournament.status = 'completed';
-      updatedTournament.currentRound = roundIndex + 2;
+    if ((tournament.participants || []).length >= tournament.maxParticipants) {
+      alert('❌ Tournament is full!');
+      return;
     }
 
-    setSelectedTournament(updatedTournament);
-    setTournaments(tournaments.map(t => t._id === updatedTournament._id ? updatedTournament : t));
-  };
+    if (tournament.status === 'completed' || tournament.status === 'in-progress') {
+      alert('❌ Cannot register for this tournament at this time.');
+      return;
+    }
 
-  const addParticipant = (tournamentId, participant) => {
-    setTournaments(tournaments.map(t => {
-      if (t._id === tournamentId && t.participants.length < t.maxParticipants) {
-        return {
-          ...t,
-          participants: [...t.participants, participant],
-        };
-      }
-      return t;
-    }));
-  };
-
-  const removeParticipant = (tournamentId, participantId) => {
-    setTournaments(tournaments.map(t => {
+    const updated = tournaments.map(t => {
       if (t._id === tournamentId) {
         return {
           ...t,
-          participants: t.participants.filter(p => p._id !== participantId),
+          participants: [...(t.participants || []), user]
         };
       }
       return t;
-    }));
+    });
+
+    setTournaments(updated);
+    localStorage.setItem('tournaments', JSON.stringify(updated));
+
+    const updatedUser = {
+      ...user,
+      registeredTournaments: [...(user.registeredTournaments || []), tournamentId]
+    };
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+    setRegisteredTournaments([...registeredTournaments, tournamentId]);
+
+    alert('✓ Successfully registered for the tournament!');
   };
 
-  if (showBracket && selectedTournament) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <button
-            onClick={() => setShowBracket(false)}
-            className="mb-6 bg-navy text-white px-6 py-3 rounded-lg hover:bg-blue transition font-bold"
-          >
-            ← Back to Tournaments
-          </button>
+  const handleWithdraw = (tournamentId) => {
+    if (!user) return;
 
-          <div className="bg-white rounded-xl shadow-xl p-8 border border-gray-200">
-            <h1 className="text-5xl font-bold text-navy mb-2">{selectedTournament.name}</h1>
-            <div className="mb-8 flex gap-4 items-center">
-              <span className={`px-4 py-2 rounded-lg font-bold text-white text-lg ${
-                selectedTournament.status === 'completed' ? 'bg-green-600' : 'bg-blue'
-              }`}>
-                {selectedTournament.status.toUpperCase()}
+    const updated = tournaments.map(t => {
+      if (t._id === tournamentId) {
+        return {
+          ...t,
+          participants: (t.participants || []).filter(p => p._id !== user._id)
+        };
+      }
+      return t;
+    });
+
+    setTournaments(updated);
+    localStorage.setItem('tournaments', JSON.stringify(updated));
+
+    const updatedUser = {
+      ...user,
+      registeredTournaments: (user.registeredTournaments || []).filter(id => id !== tournamentId)
+    };
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+
+    setRegisteredTournaments(registeredTournaments.filter(id => id !== tournamentId));
+    alert('✓ Withdrawn from tournament.');
+  };
+
+  const isRegistered = (tournamentId) => registeredTournaments.includes(tournamentId);
+
+  return (
+    <div className="min-h-screen bg-slate-950">
+      {/* Full-Screen Immersive Hero with Interactive Title */}
+      <div className="relative min-h-screen bg-black flex items-center justify-center overflow-hidden">
+        {/* Animated Background Grid */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-blue-950/20 to-slate-950"></div>
+          <div className="grid grid-cols-8 w-full h-full opacity-10">
+            {[...Array(64)].map((_, i) => (
+              <div key={i} className="border border-slate-600/20 flex items-center justify-center text-2xl hover:text-yellow-400 transition cursor-pointer">
+                {['♔', '♕', '♖', '♗', '♘', '♙'][i % 6]}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Glow Effects */}
+        <div className="absolute inset-0 opacity-40">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 right-1/4 w-80 h-80 bg-yellow-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+        </div>
+
+        {/* Main Title Section */}
+        <div className="relative z-20 text-center max-w-5xl px-6">
+          {/* Top Badge */}
+          <div className="mb-12 flex items-center justify-center gap-4">
+            <div className="h-1 w-12 bg-gradient-to-r from-transparent to-yellow-400"></div>
+            <span className="text-yellow-300 font-bold text-lg tracking-widest">CHESS CHAMPIONSHIPS 2026</span>
+            <div className="h-1 w-12 bg-gradient-to-l from-transparent to-yellow-400"></div>
+          </div>
+
+          {/* Main Heading */}
+          <h1 className="text-8xl md:text-9xl font-black text-white mb-8 leading-none drop-shadow-2xl" style={{
+            background: 'linear-gradient(135deg, #fbbf24 0%, #60a5fa 25%, #34d399 50%, #f472b6 75%, #fbbf24 100%)',
+            backgroundSize: '200% 200%',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            animation: 'gradientShift 4s ease infinite'
+          }}>
+            BATTLE <br/> THE BOARD
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-2xl md:text-3xl text-slate-300 mb-12 font-light leading-relaxed max-w-3xl mx-auto">
+            Join elite chess players in the most prestigious tournament series. Compete, conquer, and claim your crown.
+          </p>
+
+          {/* Stats Overview */}
+          <div className="grid grid-cols-3 gap-6 mb-16 max-w-2xl mx-auto">
+            <div className="bg-slate-800/40 backdrop-blur-sm border border-yellow-400/30 rounded-xl p-6 hover:border-yellow-400/60 transition">
+              <div className="text-4xl font-black text-yellow-400 mb-2">{tournaments.length}</div>
+              <div className="text-slate-400 text-sm font-bold">TOURNAMENTS</div>
+            </div>
+            <div className="bg-slate-800/40 backdrop-blur-sm border border-cyan-400/30 rounded-xl p-6 hover:border-cyan-400/60 transition">
+              <div className="text-4xl font-black text-cyan-400 mb-2">
+                {tournaments.reduce((sum, t) => sum + (t.participants?.length || 0), 0)}
+              </div>
+              <div className="text-slate-400 text-sm font-bold">COMPETITORS</div>
+            </div>
+            <div className="bg-slate-800/40 backdrop-blur-sm border border-purple-400/30 rounded-xl p-6 hover:border-purple-400/60 transition">
+              <div className="text-4xl font-black text-purple-400 mb-2">∞</div>
+              <div className="text-slate-400 text-sm font-bold">GLORY</div>
+            </div>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
+            <button
+              onClick={() => user && userType === 'member' ? document.getElementById('tournaments-section').scrollIntoView({ behavior: 'smooth' }) : navigate('/member-auth')}
+              className="group relative px-12 py-5 rounded-2xl font-bold text-lg overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-yellow-500 group-hover:from-yellow-300 group-hover:to-yellow-400 transition"></div>
+              <span className="relative text-slate-900 flex items-center gap-2">
+                ♔ REGISTER NOW
               </span>
-              <span className="text-gray-600 text-lg">
-                Round {selectedTournament.currentRound} / {selectedTournament.rounds.length}
+            </button>
+            <button className="px-12 py-5 rounded-2xl font-bold text-lg border-2 border-slate-400 text-slate-300 hover:border-slate-200 hover:text-slate-100 transition">
+              LEARN MORE
+            </button>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 animate-bounce">
+          <div className="text-slate-400 text-center">
+            <p className="text-sm mb-2">Scroll to explore</p>
+            <div className="flex flex-col items-center">
+              <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+        `}</style>
+      </div>
+
+      {/* Tournaments Section */}
+      <div id="tournaments-section" className="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 relative py-32">
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Section Header */}
+          <div className="text-center mb-24">
+            <div className="inline-block mb-6">
+              <span className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/40 text-yellow-300 font-bold text-sm tracking-widest">
+                ♖ FEATURED COMPETITIONS
               </span>
             </div>
+            <h2 className="text-6xl md:text-7xl font-black text-white mb-6">
+              Upcoming <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">Tournaments</span>
+            </h2>
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto">Pick your competition and join the elite players competing for glory</p>
+          </div>
 
-            {selectedTournament.winner && (
-              <div className="bg-gold/20 border-l-4 border-gold p-6 mb-8 rounded">
-                <h2 className="text-2xl font-bold text-navy mb-2">🏆 Tournament Winner</h2>
-                <p className="text-xl">
-                  <strong>{selectedTournament.winner.firstName} {selectedTournament.winner.lastName}</strong>
-                </p>
-                <p className="text-gray-600">Rating: {selectedTournament.winner.rating}</p>
+          {/* Auth Status */}
+          {!user ? (
+            <div className="mb-16 bg-gradient-to-r from-blue-900/40 to-purple-900/40 border border-blue-600/40 rounded-3xl p-10 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-sm">
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-2">Ready to Compete?</h3>
+                <p className="text-slate-300">Create your account and join tournaments today</p>
               </div>
-            )}
+              <button
+                onClick={() => navigate('/member-auth')}
+                className="px-10 py-4 bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 font-bold rounded-xl hover:from-yellow-300 hover:to-orange-300 transition whitespace-nowrap"
+              >
+                Sign In Now
+              </button>
+            </div>
+          ) : null}
 
-            {/* Tournament Bracket */}
+          {/* Tournaments Display */}
+          {tournaments.length > 0 ? (
             <div className="space-y-8">
-              {selectedTournament.rounds.map((round, roundIndex) => (
-                <div key={roundIndex} className="bg-gray-50 rounded-lg p-6">
-                  <h2 className="text-2xl font-bold text-navy mb-6">{round.name}</h2>
-                  <div className="space-y-4">
-                    {round.matches.map((match, matchIndex) => (
-                      <div
-                        key={match.id}
-                        className={`border-2 rounded-lg p-4 ${
-                          match.status === 'completed'
-                            ? 'border-green-500 bg-green-50'
-                            : match.status === 'ready'
-                            ? 'border-blue bg-blue/10'
-                            : 'border-gray-300 bg-gray-100'
-                        }`}
-                      >
-                        <div className="flex justify-between items-center mb-3">
-                          <h3 className="font-bold text-gray-600">Match {matchIndex + 1}</h3>
-                          <span className={`px-3 py-1 rounded text-sm font-bold text-white ${
-                            match.status === 'completed' ? 'bg-green-500' : 'bg-gray-400'
-                          }`}>
-                            {match.status}
-                          </span>
-                        </div>
+              {tournaments.map((tournament, idx) => {
+                const participantCount = (tournament.participants || []).length;
+                const isUserRegistered = isRegistered(tournament._id);
+                const isFull = participantCount >= tournament.maxParticipants;
+                const canWithdraw = isUserRegistered && 
+                  (tournament.status === 'upcoming' || tournament.status === 'registration');
 
-                        <div className="space-y-2">
-                          {/* Player 1 */}
-                          {match.player1 ? (
-                            <button
-                              onClick={() => setMatchWinner(roundIndex, matchIndex, match.player1)}
-                              className={`w-full p-3 text-left rounded border-l-4 transition ${
-                                match.winner?._id === match.player1._id
-                                  ? 'bg-green-100 border-green-500 font-bold'
-                                  : 'bg-white border-blue hover:bg-blue/5'
-                              } ${match.status === 'completed' ? 'opacity-75' : 'cursor-pointer'}`}
-                              disabled={match.status === 'completed'}
-                            >
-                              <div className="flex justify-between items-center">
-                                <div>
-                                  <p className="font-bold">{match.player1.firstName} {match.player1.lastName}</p>
-                                  <p className="text-sm text-gray-600">Rating: {match.player1.rating}</p>
-                                </div>
-                                {match.winner?._id === match.player1._id && <span className="text-2xl">✓</span>}
+                // Rotating accent colors
+                const accentColors = [
+                  { main: 'from-yellow-600 to-orange-600', light: 'yellow', text: 'text-yellow-400' },
+                  { main: 'from-cyan-600 to-blue-600', light: 'cyan', text: 'text-cyan-400' },
+                  { main: 'from-purple-600 to-pink-600', light: 'purple', text: 'text-purple-400' },
+                  { main: 'from-green-600 to-emerald-600', light: 'green', text: 'text-green-400' },
+                ];
+                const accent = accentColors[idx % accentColors.length];
+
+                return (
+                  <div key={tournament._id} className={`group relative bg-gradient-to-r ${accent.main} rounded-3xl p-1 hover:p-1 transition`}>
+                    <div className="bg-slate-900 rounded-3xl p-12 relative overflow-hidden">
+                      {/* Background Pattern */}
+                      <div className="absolute inset-0 opacity-5 pointer-events-none">
+                        <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(68,68,68,.2)_25%,rgba(68,68,68,.2)_50%,transparent_50%,transparent_75%,rgba(68,68,68,.2)_75%,rgba(68,68,68,.2))] bg-[length:40px_40px]"></div>
+                      </div>
+
+                      <div className="relative grid md:grid-cols-2 gap-16 items-center">
+                        {/* Left - Main Info */}
+                        <div>
+                          <div className={`inline-block mb-6 px-4 py-2 rounded-full ${accent.text} font-bold text-sm bg-slate-800/60 border border-current/30`}>
+                            {tournament.status.toUpperCase()}
+                          </div>
+                          
+                          <h3 className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight">
+                            {tournament.name}
+                          </h3>
+                          
+                          <p className="text-lg text-slate-300 mb-8 leading-relaxed">
+                            {tournament.description}
+                          </p>
+
+                          {/* Key Stats */}
+                          <div className="grid grid-cols-3 gap-4 mb-10 pb-10 border-b border-slate-700/40">
+                            <div>
+                              <div className="text-sm text-slate-400 font-bold mb-2">FORMAT</div>
+                              <div className={`text-2xl font-black ${accent.text}`}>{tournament.format.replace('-', ' ')}</div>
+                            </div>
+                            <div>
+                              <div className="text-sm text-slate-400 font-bold mb-2">PLAYERS</div>
+                              <div className={`text-2xl font-black ${isFull ? 'text-red-400' : accent.text}`}>
+                                {participantCount}/{tournament.maxParticipants}
                               </div>
-                            </button>
-                          ) : (
-                            <div className="p-3 bg-gray-100 rounded text-gray-400 italic">
-                              Waiting for winner from previous round...
+                            </div>
+                            <div>
+                              <div className="text-sm text-slate-400 font-bold mb-2">STARTS</div>
+                              <div className="text-2xl font-black text-slate-100">
+                                {tournament.startDate instanceof Date 
+                                  ? tournament.startDate.toLocaleDateString()
+                                  : new Date(tournament.startDate).toLocaleDateString()}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Participants */}
+                          {participantCount > 0 && (
+                            <div className="mb-8">
+                              <div className="text-sm text-slate-400 font-bold mb-4">REGISTERED CHAMPIONS</div>
+                              <div className="flex flex-wrap gap-3">
+                                {(tournament.participants || []).slice(0, 6).map(p => (
+                                  <div key={p._id} className="bg-slate-800/60 text-slate-100 px-4 py-2 rounded-full text-sm font-bold border border-slate-700/60 hover:border-slate-600 transition">
+                                    {p.firstName}
+                                  </div>
+                                ))}
+                                {participantCount > 6 && (
+                                  <div className="bg-slate-800/60 text-slate-400 px-4 py-2 rounded-full text-sm font-bold border border-slate-700/60">
+                                    +{participantCount - 6} more
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           )}
+                        </div>
 
-                          {/* Player 2 */}
-                          {match.player2 ? (
-                            <button
-                              onClick={() => setMatchWinner(roundIndex, matchIndex, match.player2)}
-                              className={`w-full p-3 text-left rounded border-l-4 transition ${
-                                match.winner?._id === match.player2._id
-                                  ? 'bg-green-100 border-green-500 font-bold'
-                                  : 'bg-white border-blue hover:bg-blue/5'
-                              } ${match.status === 'completed' ? 'opacity-75' : 'cursor-pointer'}`}
-                              disabled={match.status === 'completed'}
-                            >
-                              <div className="flex justify-between items-center">
-                                <div>
-                                  <p className="font-bold">{match.player2.firstName} {match.player2.lastName}</p>
-                                  <p className="text-sm text-gray-600">Rating: {match.player2.rating}</p>
-                                </div>
-                                {match.winner?._id === match.player2._id && <span className="text-2xl">✓</span>}
-                              </div>
-                            </button>
-                          ) : (
-                            <div className="p-3 bg-gray-100 rounded text-gray-400 italic">
-                              Waiting for winner from previous round...
+                        {/* Right - Visual & Action */}
+                        <div className="space-y-8">
+                          {/* Visual Representation */}
+                          <div className="relative h-80 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl overflow-hidden border border-slate-700/40 group/image">
+                            <ChessImagePlaceholder icon={['♖', '♕', '♔', '♘'][idx % 4]} text={tournament.format} />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent opacity-60"></div>
+                          </div>
+
+                          {/* Progress Bar */}
+                          <div>
+                            <div className="flex justify-between items-center mb-3">
+                              <span className="text-sm text-slate-400 font-bold">REGISTRATION PROGRESS</span>
+                              <span className={`text-lg font-black ${accent.text}`}>{Math.round((participantCount / tournament.maxParticipants) * 100)}%</span>
                             </div>
+                            <div className="w-full bg-slate-800 rounded-full h-3 overflow-hidden border border-slate-700/40">
+                              <div 
+                                className={`h-full rounded-full bg-gradient-to-r ${accent.main} transition-all duration-300`}
+                                style={{ width: `${Math.min((participantCount / tournament.maxParticipants) * 100, 100)}%` }}
+                              ></div>
+                            </div>
+                          </div>
+
+                          {/* Action Button */}
+                          {isUserRegistered ? (
+                            <div className="space-y-3">
+                              <button className="w-full bg-emerald-600/40 text-emerald-300 font-bold py-4 rounded-2xl border border-emerald-500/60 text-lg cursor-default hover:bg-emerald-600/50 transition">
+                                ✓ YOU'RE REGISTERED
+                              </button>
+                              {canWithdraw && (
+                                <button
+                                  onClick={() => handleWithdraw(tournament._id)}
+                                  className="w-full bg-red-600/40 hover:bg-red-500/40 text-red-300 font-bold py-3 rounded-2xl border border-red-500/60 transition"
+                                >
+                                  WITHDRAW
+                                </button>
+                              )}
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => handleRegister(tournament._id)}
+                              disabled={isFull || tournament.status === 'completed' || tournament.status === 'in-progress'}
+                              className={`w-full font-bold py-4 rounded-2xl text-lg transition transform hover:scale-105 border ${
+                                isFull || tournament.status === 'completed' || tournament.status === 'in-progress'
+                                  ? 'bg-slate-700/40 text-slate-500 cursor-not-allowed opacity-50 border-slate-700/30'
+                                  : `bg-gradient-to-r ${accent.main} text-white hover:shadow-lg border-${accent.light}-400/30`
+                              }`}
+                            >
+                              {isFull ? '❌ TOURNAMENT FULL' : tournament.status === 'completed' ? '✓ ENDED' : '♔ JOIN NOW'}
+                            </button>
                           )}
                         </div>
                       </div>
-                    ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-24">
+              <div className="text-9xl mb-8 opacity-20">♔</div>
+              <p className="text-3xl font-bold text-slate-200 mb-4">No Active Tournaments</p>
+              <p className="text-lg text-slate-400">Check back soon for new competitions!</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Your Tournaments Section */}
+      {user && userType === 'member' && registeredTournaments.length > 0 && (
+        <div className="bg-gradient-to-b from-slate-900 to-slate-950 py-32 border-t border-slate-700/40">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-20">
+              <span className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/40 text-blue-300 font-bold text-sm tracking-widest mb-6">
+                ♕ YOUR TOURNAMENTS
+              </span>
+              <h2 className="text-6xl font-black text-white">Your <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Journey</span></h2>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {registeredTournaments.map((tournamentId, idx) => {
+                const t = tournaments.find(trn => trn._id === tournamentId);
+                const accentStyles = [
+                  'border-blue-500/40 hover:border-blue-400/60 bg-blue-600/10',
+                  'border-cyan-500/40 hover:border-cyan-400/60 bg-cyan-600/10',
+                  'border-purple-500/40 hover:border-purple-400/60 bg-purple-600/10',
+                ];
+                const style = accentStyles[idx % accentStyles.length];
+
+                return t ? (
+                  <div key={t._id} className={`group relative bg-slate-800/60 border ${style} rounded-2xl p-10 hover:shadow-2xl transition backdrop-blur-sm`}>
+                    <div className="flex items-start justify-between mb-8">
+                      <div>
+                        <h4 className="text-3xl font-black text-white mb-3">{t.name}</h4>
+                        <p className={`text-sm font-bold ${
+                          t.status === 'completed' ? 'text-emerald-400' : 
+                          t.status === 'in-progress' ? 'text-yellow-400' : 
+                          'text-blue-400'
+                        }`}>
+                          {t.status.replace('-', ' ').toUpperCase()}
+                        </p>
+                      </div>
+                      <div className="text-5xl opacity-20">♞</div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-6 py-8 border-t border-b border-slate-700/40">
+                      <div>
+                        <div className="text-sm text-slate-400 font-bold mb-2">PARTICIPANTS</div>
+                        <div className="text-2xl font-black text-blue-400">{(t.participants || []).length}/{t.maxParticipants}</div>
+                      </div>
+                      <div>
+                        <div className="text-sm text-slate-400 font-bold mb-2">FORMAT</div>
+                        <div className="text-2xl font-black text-cyan-400">{t.format.replace('-', ' ')}</div>
+                      </div>
+                    </div>
+
+                    <div className="mt-8 flex gap-3">
+                      <button className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition">
+                        VIEW DETAILS
+                      </button>
+                      <button className="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-100 font-bold py-3 rounded-xl transition">
+                        MY PROGRESS
+                      </button>
+                    </div>
+                  </div>
+                ) : null;
+              })}
             </div>
           </div>
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12">
-      <div className="max-w-7xl mx-auto px-4">
-        <div ref={competitionsRef} className="mb-12 scroll-animate">
-          <h1 className="text-6xl font-bold text-navy mb-4 animate-fade-in-down">Elite Competitions</h1>
-          <p className="text-xl text-gray-600 max-w-3xl animate-fade-in-down">
-            Register for tournaments, compete against fellow players, and showcase your skills. Single-elimination format for fair and exciting matches.
-          </p>
-        </div>
-
-        {tournaments.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-lg p-12 text-center border border-gray-200">
-            <p className="text-gray-600 mb-6 text-lg font-semibold">Loading tournaments...</p>
-            <button
-              onClick={() => initializeDefaultTournaments()}
-              className="bg-blue text-white px-8 py-3 rounded-lg hover:bg-navy transition font-bold text-lg"
-            >
-              Load Default Tournaments
-            </button>
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-2 gap-8">
-          {tournaments.map((tournament, idx) => (
-            <div
-              key={tournament._id}
-              className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-2xl transition transform hover:scale-105 stagger-1 animate-fade-in-up"
-              style={{ animationDelay: `${idx * 0.1}s` }}
-            >
-              <div className={`h-3 ${
-                tournament.status === 'completed' ? 'bg-green-500' : 
-                tournament.status === 'in-progress' ? 'bg-blue' : 'bg-gold'
-              }`} />
-
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex-1">
-                    <h2 className="text-2xl font-bold text-navy mb-2">{tournament.name}</h2>
-                    <p className="text-gray-600 text-sm">{tournament.description}</p>
-                  </div>
-                  <span className={`px-4 py-2 rounded-full text-xs font-bold uppercase whitespace-nowrap ml-4 ${
-                    tournament.status === 'completed' ? 'bg-green-500 text-white' :
-                    tournament.status === 'in-progress' ? 'bg-blue text-white' : 'bg-gold text-navy'
-                  }`}>
-                    {tournament.status}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-3 gap-3 mb-6 py-4 border-y border-gray-200">
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-blue">{tournament.participants.length}</p>
-                    <p className="text-xs text-gray-600">Registered</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-gold">{tournament.maxParticipants}</p>
-                    <p className="text-xs text-gray-600">Max Slots</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-2xl font-bold text-green-600">{tournament.rounds.length}</p>
-                    <p className="text-xs text-gray-600">Rounds</p>
-                  </div>
-                </div>
-
-                <div className="space-y-2 mb-6 text-sm">
-                  <div className="flex justify-between text-gray-700">
-                    <span>Format:</span>
-                    <span className="font-bold capitalize">{tournament.format.replace('-', ' ')}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Starts:</span>
-                    <span className="font-bold">{tournament.startDate.toLocaleDateString()}</span>
-                  </div>
-                </div>
-
-                {tournament.status === 'registration' && (
-                  <div className="mb-6">
-                    <h3 className="font-bold text-navy mb-3">Available Players</h3>
-                    <div className="space-y-2 max-h-32 overflow-y-auto">
-                      {fakeProfiles
-                        .filter(p => !tournament.participants.find(tp => tp._id === p._id))
-                        .map(player => (
-                          <button
-                            key={player._id}
-                            onClick={() => addParticipant(tournament._id, player)}
-                            className="w-full text-left p-2 bg-gray-50 hover:bg-blue/10 rounded transition text-sm"
-                          >
-                            <span className="font-bold">{player.firstName} {player.lastName}</span>
-                            <span className="text-gray-600 ml-2">({player.rating})</span>
-                          </button>
-                        ))}
-                    </div>
-                  </div>
-                )}
-
-                {tournament.participants.length > 0 && (
-                  <div className="mb-6">
-                    <h3 className="font-bold text-navy mb-3">Registered Participants</h3>
-                    <div className="space-y-2 max-h-32 overflow-y-auto">
-                      {tournament.participants.map(p => (
-                        <div
-                          key={p._id}
-                          className="flex justify-between items-center p-2 bg-blue/10 rounded text-sm"
-                        >
-                          <div>
-                            <p className="font-bold">{p.firstName} {p.lastName}</p>
-                            <p className="text-gray-600">Rating: {p.rating}</p>
-                          </div>
-                          {tournament.status === 'registration' && (
-                            <button
-                              onClick={() => removeParticipant(tournament._id, p._id)}
-                              className="text-red-600 hover:text-red-800 font-bold"
-                            >
-                              ✕
-                            </button>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex gap-3 pt-4">
-                  {tournament.status === 'registration' && (
-                    <button
-                      onClick={() => startTournament(tournament._id)}
-                      className="flex-1 bg-gold text-navy font-bold py-3 rounded-lg hover:bg-yellow-400 transition disabled:opacity-50 text-lg"
-                      disabled={tournament.participants.length < 2}
-                    >
-                      Start Tournament
-                    </button>
-                  )}
-                  {tournament.status !== 'registration' && (
-                    <button
-                      onClick={() => {
-                        setSelectedTournament(tournament);
-                        setShowBracket(true);
-                      }}
-                      className="flex-1 bg-blue text-white font-bold py-3 rounded-lg hover:bg-navy transition text-lg"
-                    >
-                      View Bracket
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 };

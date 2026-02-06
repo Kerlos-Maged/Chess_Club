@@ -49,9 +49,9 @@ export const Join = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-bg flex items-center justify-center">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
-          <h2 className="text-3xl font-bold text-gold mb-4">✓ Success!</h2>
+      <div className="min-h-screen bg-gradient-to-b from-green-50 via-emerald-50 to-white flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md text-center border border-green-200">
+          <h2 className="text-3xl font-bold text-green-600 mb-4">✓ Success!</h2>
           <p className="text-gray-700 mb-6">
             Your application has been submitted successfully. We'll review it and get back to you soon!
           </p>
@@ -67,13 +67,13 @@ export const Join = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bg">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 via-emerald-50 to-white">
       <div className="max-w-2xl mx-auto px-4 py-20">
-        <h1 className="text-4xl font-bold text-navy mb-8 text-center">Join Chess Club</h1>
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-8 text-center">Join Chess Club</h1>
         
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-lg shadow-lg p-8 space-y-6"
+          className="bg-white rounded-xl shadow-2xl p-8 space-y-6 border border-green-200"
         >
           {error && <div className="bg-red-100 text-red-700 p-3 rounded">{error}</div>}
 

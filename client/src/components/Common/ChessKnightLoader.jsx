@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/knightLoader.css';
+import '../../styles/knightLoader.css';
 
 export const ChessKnightLoader = ({ size = 'md', text = 'Loading...' }) => {
   const sizeClass = {

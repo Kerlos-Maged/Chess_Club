@@ -1,0 +1,298 @@
+/* Chess Piece Animations */
+
+/* Moving Queen Animation */
+@keyframes moveQueen {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: translate(80px, -60px) rotate(5deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(100px, -100px) rotate(-5deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(60px, -80px) rotate(3deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Knight Move Animation - L-shape (2 right, 1 down) */
+@keyframes knightMove {
+  0% {
+    transform: translate(0, 0) scale(1) rotateZ(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: translate(80px, 0px) scale(0.95) rotateZ(10deg);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate(80px, 40px) scale(0.9) rotateZ(15deg);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translate(60px, 30px) scale(0.95) rotateZ(5deg);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(0, 0) scale(1) rotateZ(0deg);
+    opacity: 1;
+  }
+}
+
+/* Bishop Diagonal Animation */
+@keyframes bishopMove {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(100px) translateY(100px) rotate(10deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Rook Move Animation */
+@keyframes rookMove {
+  0% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-120px) scaleY(0.95);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* Pawn Attack Animation */
+@keyframes pawnAttack {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(50px, -50px) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Chess Piece Spawn Effect */
+@keyframes pieceFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Chess Board Pattern Animation */
+@keyframes boardGlow {
+  0% {
+    box-shadow: inset 0 0 10px rgba(201, 162, 58, 0.1);
+  }
+  50% {
+    box-shadow: inset 0 0 20px rgba(201, 162, 58, 0.3);
+  }
+  100% {
+    box-shadow: inset 0 0 10px rgba(201, 162, 58, 0.1);
+  }
+}
+
+/* Checkmate Flash */
+@keyframes checkmateFlash {
+  0%, 100% {
+    color: #C9A23A;
+    text-shadow: 0 0 10px rgba(201, 162, 58, 0.5);
+  }
+  50% {
+    color: #ff6b6b;
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+  }
+}
+
+/* Piece Capture Animation */
+@keyframes pieceCapture {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+/* Floating Chess Piece */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Chess King Wobble */
+@keyframes kingWobble {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-2deg);
+  }
+  75% {
+    transform: rotate(2deg);
+  }
+}
+
+/* Animated Chess Background Pattern */
+@keyframes chessPatternShift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 40px;
+  }
+}
+
+/* Queen Shine Effect */
+@keyframes queenShine {
+  0% {
+    text-shadow: 0 0 0px rgba(201, 162, 58, 0);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(201, 162, 58, 0.8);
+  }
+  100% {
+    text-shadow: 0 0 0px rgba(201, 162, 58, 0);
+  }
+}
+
+/* Apply animations to elements */
+.animate-queen {
+  animation: moveQueen 3s ease-in-out infinite;
+}
+
+.animate-knight {
+  animation: knightMove 3s ease-in-out infinite;
+}
+
+.animate-bishop {
+  animation: bishopMove 3s ease-in-out infinite;
+}
+
+.animate-rook {
+  animation: rookMove 3s ease-in-out infinite;
+}
+
+.animate-pawn {
+  animation: pawnAttack 2.5s ease-in-out infinite;
+}
+
+.animate-piece-fade {
+  animation: pieceFadeIn 0.6s ease-out;
+}
+
+.animate-board-glow {
+  animation: boardGlow 2s ease-in-out infinite;
+}
+
+.animate-checkmate {
+  animation: checkmateFlash 0.5s ease-in-out infinite;
+}
+
+.animate-capture {
+  animation: pieceCapture 0.6s ease-in;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-king {
+  animation: kingWobble 2s ease-in-out infinite;
+}
+
+.animate-pattern {
+  animation: chessPatternShift 20s linear infinite;
+}
+
+.animate-queen-shine {
+  animation: queenShine 2s ease-in-out infinite;
+}
+
+/* Chess Piece Icons with Animations */
+.chess-piece {
+  display: inline-block;
+  font-size: 2rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.chess-piece:hover {
+  transform: scale(1.2) rotate(10deg);
+  filter: drop-shadow(0 0 10px rgba(201, 162, 58, 0.6));
+}
+
+/* Chess Board Gradient Background */
+.chess-board-bg {
+  background: linear-gradient(45deg, #0A1630 25%, transparent 25%, transparent 75%, #0A1630 75%, #0A1630),
+              linear-gradient(45deg, #0A1630 25%, transparent 25%, transparent 75%, #0A1630 75%, #0A1630);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+  background-color: #0B5FA5;
+}
+
+/* Animated Chess Container */
+.chess-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chess-container::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(201, 162, 58, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Pulse Animation for Emphasis */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(201, 162, 58, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 20px rgba(201, 162, 58, 0);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}

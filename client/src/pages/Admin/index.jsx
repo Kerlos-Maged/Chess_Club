@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fakeProfiles, fakeAdmin, fakeTournaments } from '../data/fakeData';
-import { AuthContext } from '../context/AuthContext';
-import { ChessKnightLoader } from '../components/Common';
+import { fakeProfiles, fakeAdmin } from '../../data/fakeData';
+import { AuthContext } from '../../context/AuthContext';
+import { ChessKnightLoader } from '../../components/Common';
 
 export const Admin = () => {
   const navigate = useNavigate();
@@ -25,28 +25,6 @@ export const Admin = () => {
     grade: '9',
     experience: 'beginner',
   });
-  // Tournament management states
-  const [showCreateTournament, setShowCreateTournament] = useState(false);
-  const [newTournament, setNewTournament] = useState({
-    name: '',
-    description: '',
-    format: 'single-elimination',
-    maxParticipants: '8',
-    startDate: '',
-  });
-  const [selectedTournament, setSelectedTournament] = useState(null);
-
-  // Load data when tab changes - MUST be before any early returns
-  useEffect(() => {
-    if (token && user) {
-      if (activeTab === 'players' && profiles.length === 0) {
-        fetchProfiles();
-      }
-      if (activeTab === 'tournaments' && tournaments.length === 0) {
-        fetchTournaments();
-      }
-    }
-  }, [activeTab, token, user]);
 
   const handleChange = (e) => {
     setFormData({
@@ -102,68 +80,6 @@ export const Admin = () => {
     } finally {
       setLoadingProfiles(false);
     }
-  };
-
-  const handleCreateTournament = async (e) => {
-    e.preventDefault();
-    try {
-      const tournament = {
-        _id: Date.now().toString(),
-        name: newTournament.name,
-        description: newTournament.description,
-        format: newTournament.format,
-        maxParticipants: parseInt(newTournament.maxParticipants),
-        startDate: new Date(newTournament.startDate),
-        participants: [],
-        rounds: [],
-        status: 'upcoming',
-        winner: null,
-      };
-
-      const updated = [...tournaments, tournament];
-      setTournaments(updated);
-      localStorage.setItem('tournaments', JSON.stringify(updated));
-      setShowCreateTournament(false);
-      setNewTournament({ name: '', description: '', format: 'single-elimination', maxParticipants: '8', startDate: '' });
-      setError(null);
-    } catch (err) {
-      setError('Failed to create tournament');
-    }
-  };
-
-  const handleDeleteTournament = (id) => {
-    const updated = tournaments.filter(t => t._id !== id);
-    setTournaments(updated);
-    localStorage.setItem('tournaments', JSON.stringify(updated));
-    setSelectedTournament(null);
-  };
-
-  const handleAddParticipant = (tournamentId, participant) => {
-    const updated = tournaments.map(t => {
-      if (t._id === tournamentId && (t.participants || []).length < t.maxParticipants) {
-        return {
-          ...t,
-          participants: [...(t.participants || []), participant],
-        };
-      }
-      return t;
-    });
-    setTournaments(updated);
-    localStorage.setItem('tournaments', JSON.stringify(updated));
-  };
-
-  const handleRemoveParticipant = (tournamentId, participantId) => {
-    const updated = tournaments.map(t => {
-      if (t._id === tournamentId) {
-        return {
-          ...t,
-          participants: (t.participants || []).filter(p => p._id !== participantId),
-        };
-      }
-      return t;
-    });
-    setTournaments(updated);
-    localStorage.setItem('tournaments', JSON.stringify(updated));
   };
 
   const handleCreateProfile = async (e) => {
@@ -241,10 +157,22 @@ export const Admin = () => {
     alert('Profile deleted successfully!');
   };
 
+  // Fetch data when tab changes (MUST be before the early return)
+  useEffect(() => {
+    if (token && user) {
+      if (activeTab === 'players' && profiles.length === 0) {
+        fetchProfiles();
+      }
+      if (activeTab === 'tournaments' && tournaments.length === 0) {
+        fetchTournaments();
+      }
+    }
+  }, [activeTab, token, user]);
+
   // Login Page
   if (!token || !user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 flex items-center justify-center py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-navy via-blue to-navy flex items-center justify-center py-12 px-4">
         <div className="w-full max-w-md">
           <div className="bg-white rounded-xl shadow-2xl p-8 border border-gray-200">
             <h1 className="text-4xl font-bold text-navy mb-2 text-center">Admin Portal</h1>
@@ -301,6 +229,7 @@ export const Admin = () => {
     );
   }
 
+  // Main Dashboard
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard' },
     { id: 'players', label: 'Manage Players' },
@@ -310,7 +239,7 @@ export const Admin = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 flex">
+    <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
       <aside className="w-64 bg-gradient-to-b from-navy to-blue text-white shadow-xl">
         <div className="p-6 border-b border-white/20">
@@ -357,15 +286,15 @@ export const Admin = () => {
               <h2 className="text-3xl font-bold text-navy mb-8">Dashboard Overview</h2>
               
               <div className="grid md:grid-cols-4 gap-6 mb-8">
-                <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl shadow-md p-6 border-l-4 border-blue-600">
-                  <p className="text-gray-400 text-sm mb-2">Total Players</p>
-                  <p className="text-4xl font-bold text-blue-400">{profiles.length}</p>
+                <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue">
+                  <p className="text-gray-600 text-sm mb-2">Total Players</p>
+                  <p className="text-4xl font-bold text-navy">{profiles.length}</p>
                   <p className="text-gray-500 text-xs mt-2">Active members</p>
                 </div>
 
-                <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl shadow-md p-6 border-l-4 border-amber-500">
-                  <p className="text-gray-400 text-sm mb-2">Tournaments</p>
-                  <p className="text-4xl font-bold text-amber-400">{tournaments.length}</p>
+                <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-gold">
+                  <p className="text-gray-600 text-sm mb-2">Tournaments</p>
+                  <p className="text-4xl font-bold text-gold">{tournaments.length}</p>
                   <p className="text-gray-500 text-xs mt-2">Total events</p>
                 </div>
 
@@ -534,198 +463,123 @@ export const Admin = () => {
           {/* Tournaments Tab */}
           {activeTab === 'tournaments' && (
             <div>
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-3xl font-bold text-navy">Tournament Management</h2>
-                <button
-                  onClick={() => setShowCreateTournament(!showCreateTournament)}
-                  className="bg-gold text-navy font-bold px-6 py-3 rounded-lg hover:bg-yellow-400 transition"
-                >
-                  {showCreateTournament ? '✕ Cancel' : '+ Create Tournament'}
-                </button>
-              </div>
+              <h2 className="text-3xl font-bold text-navy mb-8">Tournament Management</h2>
 
               {/* Create Tournament Form */}
-              {showCreateTournament && (
-                <div className="bg-white rounded-xl shadow-md p-6 mb-8 border-l-4 border-gold">
-                  <h3 className="text-xl font-bold text-navy mb-4">Create New Tournament</h3>
-                  <form onSubmit={handleCreateTournament} className="space-y-4">
+              <div className="bg-white rounded-xl shadow-md p-6 mb-8 border-l-4 border-gold">
+                <h3 className="text-xl font-bold text-navy mb-4">Create New Tournament</h3>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const newTournament = {
+                      _id: `tournament_${Date.now()}`,
+                      name: e.target.elements.name.value,
+                      description: e.target.elements.description.value,
+                      format: e.target.elements.format.value || 'single-elimination',
+                      maxParticipants: parseInt(e.target.elements.maxParticipants.value) || 8,
+                      registeredParticipants: [],
+                      startDate: e.target.elements.startDate.value,
+                      status: 'registration',
+                      rounds: [],
+                      createdAt: new Date(),
+                    };
+                    setTournaments([...tournaments, newTournament]);
+                    localStorage.setItem('tournaments', JSON.stringify([...tournaments, newTournament]));
+                    e.target.reset();
+                    alert('Tournament created successfully!');
+                  }}
+                  className="space-y-4"
+                >
+                  <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-bold text-navy mb-2">Tournament Name</label>
+                      <label className="block text-navy font-bold mb-2">Tournament Name</label>
                       <input
                         type="text"
-                        value={newTournament.name}
-                        onChange={(e) => setNewTournament({...newTournament, name: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue"
+                        name="name"
                         placeholder="e.g., Spring Championship"
-                        required
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-navy mb-2">Description</label>
-                      <textarea
-                        value={newTournament.description}
-                        onChange={(e) => setNewTournament({...newTournament, description: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue"
-                        placeholder="Tournament details..."
-                        rows="3"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-bold text-navy mb-2">Format</label>
-                        <select
-                          value={newTournament.format}
-                          onChange={(e) => setNewTournament({...newTournament, format: e.target.value})}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue"
-                        >
-                          <option value="single-elimination">Single Elimination</option>
-                          <option value="round-robin">Round Robin</option>
-                          <option value="swiss">Swiss</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-bold text-navy mb-2">Max Participants</label>
-                        <input
-                          type="number"
-                          value={newTournament.maxParticipants}
-                          onChange={(e) => setNewTournament({...newTournament, maxParticipants: e.target.value})}
-                          min="2"
-                          max="64"
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-navy mb-2">Start Date</label>
+                      <label className="block text-navy font-bold mb-2">Start Date</label>
                       <input
                         type="date"
-                        value={newTournament.startDate}
-                        onChange={(e) => setNewTournament({...newTournament, startDate: e.target.value})}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue"
-                        required
+                        name="startDate"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold"
                       />
                     </div>
-                    <button
-                      type="submit"
-                      className="w-full bg-blue text-white font-bold py-2 rounded-lg hover:bg-navy transition"
-                    >
-                      Create Tournament
-                    </button>
-                  </form>
-                </div>
-              )}
+                  </div>
+
+                  <div>
+                    <label className="block text-navy font-bold mb-2">Description</label>
+                    <textarea
+                      name="description"
+                      placeholder="Tournament details and rules"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold"
+                      rows="3"
+                    />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-navy font-bold mb-2">Format</label>
+                      <select
+                        name="format"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold"
+                      >
+                        <option value="single-elimination">Single Elimination</option>
+                        <option value="round-robin">Round Robin</option>
+                        <option value="swiss">Swiss System</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-navy font-bold mb-2">Max Participants</label>
+                      <select
+                        name="maxParticipants"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold"
+                      >
+                        <option value="4">4</option>
+                        <option value="8">8</option>
+                        <option value="16">16</option>
+                        <option value="32">32</option>
+                        <option value="64">64</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-navy text-white font-bold py-3 rounded-lg hover:bg-navy/90 transition"
+                  >
+                    Create Tournament
+                  </button>
+                </form>
+              </div>
 
               {/* Tournaments List */}
-              <div className="space-y-4">
+              <div className="bg-white rounded-xl shadow-md p-6">
+                <h3 className="text-xl font-bold text-navy mb-4">All Tournaments</h3>
                 {tournaments.length > 0 ? (
-                  tournaments.map(tournament => (
-                    <div key={tournament._id} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue">
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="flex-1">
-                          <h4 className="text-xl font-bold text-navy">{tournament.name}</h4>
-                          <p className="text-gray-600 text-sm mt-1">{tournament.description}</p>
-                        </div>
-                        <div className="text-right">
-                          <span className={`inline-block px-4 py-2 rounded-full font-bold text-sm mb-2 ${
-                            tournament.status === 'completed' ? 'bg-green-100 text-green-800' :
-                            tournament.status === 'in-progress' ? 'bg-blue/20 text-blue' :
-                            'bg-gold/20 text-gold'
-                          }`}>
-                            {tournament.status}
+                  <div className="space-y-4">
+                    {tournaments.map(tournament => (
+                      <div key={tournament._id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h4 className="text-lg font-bold text-navy">{tournament.name}</h4>
+                            <p className="text-gray-600 text-sm">{tournament.description}</p>
+                            <p className="text-sm text-gray-500 mt-2">
+                              Status: <span className="font-bold">{tournament.status}</span>
+                            </p>
+                          </div>
+                          <span className="bg-gold text-navy font-bold px-4 py-2 rounded-lg">
+                            {tournament.registeredParticipants?.length || 0} / {tournament.maxParticipants}
                           </span>
                         </div>
                       </div>
-
-                      <div className="grid grid-cols-3 gap-4 mb-4 text-sm border-y border-gray-200 py-3">
-                        <div>
-                          <span className="text-gray-600">Format:</span>
-                          <p className="font-bold capitalize">{tournament.format.replace('-', ' ')}</p>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Participants:</span>
-                          <p className="font-bold">{(tournament.participants || []).length}/{tournament.maxParticipants}</p>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Start Date:</span>
-                          <p className="font-bold">{tournament.startDate instanceof Date ? tournament.startDate.toLocaleDateString() : new Date(tournament.startDate).toLocaleDateString()}</p>
-                        </div>
-                      </div>
-
-                      {/* Participants */}
-                      {(tournament.participants || []).length > 0 && (
-                        <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                          <p className="text-sm font-bold text-navy mb-2">Participants:</p>
-                          <div className="flex flex-wrap gap-2">
-                            {(tournament.participants || []).map(p => (
-                              <div key={p._id} className="flex items-center gap-2 bg-white px-3 py-1 rounded-full text-sm border border-gray-300">
-                                <span>{p.firstName} {p.lastName}</span>
-                                {tournament.status === 'upcoming' && (
-                                  <button
-                                    onClick={() => handleRemoveParticipant(tournament._id, p._id)}
-                                    className="text-red-600 hover:text-red-800 font-bold"
-                                  >
-                                    ✕
-                                  </button>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Add Participants */}
-                      {tournament.status === 'upcoming' && (tournament.participants || []).length < tournament.maxParticipants && (
-                        <div className="mb-4">
-                          <select
-                            onChange={(e) => {
-                              const participant = profiles.find(p => p._id === e.target.value);
-                              if (participant) {
-                                handleAddParticipant(tournament._id, participant);
-                                e.target.value = '';
-                              }
-                            }}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm"
-                          >
-                            <option value="">+ Add Participant</option>
-                            {profiles.filter(p => !(tournament.participants || []).find(tp => tp._id === p._id)).map(p => (
-                              <option key={p._id} value={p._id}>
-                                {p.firstName} {p.lastName} (Rating: {p.rating})
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      )}
-
-                      {/* Actions */}
-                      <div className="flex gap-2 pt-3 border-t border-gray-200">
-                        {tournament.status === 'upcoming' && (tournament.participants || []).length >= 2 && (
-                          <button
-                            onClick={() => {
-                              const updated = tournaments.map(t => 
-                                t._id === tournament._id ? {...t, status: 'registration'} : t
-                              );
-                              setTournaments(updated);
-                              localStorage.setItem('tournaments', JSON.stringify(updated));
-                            }}
-                            className="flex-1 bg-blue text-white font-bold py-2 rounded-lg hover:bg-navy transition text-sm"
-                          >
-                            Open Registration
-                          </button>
-                        )}
-                        <button
-                          onClick={() => handleDeleteTournament(tournament._id)}
-                          className="flex-1 bg-red-600 text-white font-bold py-2 rounded-lg hover:bg-red-700 transition text-sm"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="bg-white rounded-xl shadow-md p-8 text-center">
-                    <p className="text-gray-600 text-lg">No tournaments created yet</p>
-                    <p className="text-gray-500 text-sm mt-2">Click "Create Tournament" to get started</p>
+                    ))}
                   </div>
+                ) : (
+                  <p className="text-gray-500">No tournaments available. Create one above.</p>
                 )}
               </div>
             </div>

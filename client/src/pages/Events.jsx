@@ -25,27 +25,27 @@ export const Events = () => {
   if (error) return <div className="text-center py-20 text-red-600">{error}</div>;
 
   return (
-    <div className="min-h-screen bg-bg">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-white">
       <div className="max-w-6xl mx-auto px-4 py-20">
-        <h1 className="text-4xl font-bold text-navy mb-12">Upcoming Events</h1>
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-12">Upcoming Events</h1>
         
         {events.length === 0 ? (
-          <p className="text-gray-600 text-lg">No events scheduled yet.</p>
+          <p className="text-gray-600 text-lg font-medium text-center py-12">No events scheduled yet. Check back soon!</p>
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             {events.map((event) => (
               <div
                 key={event._id}
-                className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition"
+                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl hover:scale-105 transition border-l-4 border-amber-500"
               >
                 <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-2xl font-bold text-navy">{event.title}</h3>
-                  <span className="bg-blue text-white px-3 py-1 rounded text-sm">
+                  <h3 className="text-2xl font-bold text-amber-700">{event.title}</h3>
+                  <span className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
                     {event.category}
                   </span>
                 </div>
-                <p className="text-gray-600 mb-4">{event.description}</p>
-                <div className="text-sm text-gray-700 space-y-1">
+                <p className="text-gray-700 mb-4 font-medium">{event.description}</p>
+                <div className="text-sm text-gray-600 space-y-2 font-medium">
                   <p>📅 {new Date(event.date).toLocaleDateString()}</p>
                   <p>🕐 {event.time}</p>
                   <p>📍 {event.location}</p>

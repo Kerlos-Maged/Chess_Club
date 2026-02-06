@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChessKnightLoader } from '../components/ChessKnightLoader';
+import { ChessKnightLoader } from '../components/Common';
 
 export const Test = () => {
   const [loading, setLoading] = useState(true);

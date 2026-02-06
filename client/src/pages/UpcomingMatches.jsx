@@ -239,7 +239,7 @@ export const UpcomingMatches = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 text-white py-12">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <div className="mb-12">
