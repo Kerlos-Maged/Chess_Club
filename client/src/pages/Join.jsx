@@ -62,6 +62,12 @@ export const Join = () => {
           >
             Submit Another Application
           </button>
+          <a
+            href="/"
+            className="block mt-4 text-green-400 hover:underline"
+          >
+            Go to Homepage
+          </a>
         </div>
       </div>
     );
@@ -80,9 +86,15 @@ export const Join = () => {
             <h1 className="text-6xl font-bold bg-gradient-to-r from-green-300 via-amber-100 to-emerald-300 bg-clip-text text-transparent mb-4 drop-shadow-lg">
               Join Chess Club
             </h1>
-            <p className="text-xl text-green-100 max-w-3xl mx-auto">
+            <p className="text-xl text-green-100 max-w-3xl mx-auto mb-6">
               Be part of our growing chess community. Fill out your information and we'll welcome you with open arms!
             </p>
+            <button className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-lg hover:shadow-lg hover:shadow-green-600/50 transition font-bold">
+              Learn More
+            </button>
+          </div>
+          <div className="mt-8 flex justify-center">
+            <img src="/public/chess-illustration.png" alt="Chess Illustration" className="w-1/2 rounded-lg shadow-lg" />
           </div>
         </div>
       </div>
@@ -90,17 +102,17 @@ export const Join = () => {
       <div className="max-w-2xl mx-auto px-4 pb-16">
         {/* Info Cards */}
         <div className="grid md:grid-cols-3 gap-4 mb-12">
-          <div className="bg-slate-800/50 border border-green-500/30 rounded-lg p-4 text-center">
+          <div className="bg-slate-800/50 border border-green-500/30 rounded-lg p-4 text-center hover:shadow-lg hover:shadow-green-500/50 transition">
             <p className="text-3xl mb-2">🎓</p>
             <p className="text-green-300 font-semibold text-sm">All Skill Levels Welcome</p>
             <p className="text-yellow-200/60 text-xs mt-1">From beginners to advanced</p>
           </div>
-          <div className="bg-slate-800/50 border border-green-500/30 rounded-lg p-4 text-center">
+          <div className="bg-slate-800/50 border border-green-500/30 rounded-lg p-4 text-center hover:shadow-lg hover:shadow-green-500/50 transition">
             <p className="text-3xl mb-2">👥</p>
             <p className="text-green-300 font-semibold text-sm">Supportive Community</p>
             <p className="text-yellow-200/60 text-xs mt-1">Grow with fellow players</p>
           </div>
-          <div className="bg-slate-800/50 border border-green-500/30 rounded-lg p-4 text-center">
+          <div className="bg-slate-800/50 border border-green-500/30 rounded-lg p-4 text-center hover:shadow-lg hover:shadow-green-500/50 transition">
             <p className="text-3xl mb-2">🏆</p>
             <p className="text-green-300 font-semibold text-sm">Regular Events</p>
             <p className="text-yellow-200/60 text-xs mt-1">Tournaments & competitions</p>
@@ -129,6 +141,7 @@ export const Join = () => {
                 onChange={handleChange}
                 required
                 className="bg-slate-700 border border-slate-600 text-amber-100 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none transition placeholder-slate-400"
+                title="Enter your first name"
               />
               <input
                 type="text"
@@ -138,6 +151,7 @@ export const Join = () => {
                 onChange={handleChange}
                 required
                 className="bg-slate-700 border border-slate-600 text-amber-100 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none transition placeholder-slate-400"
+                title="Enter your last name"
               />
             </div>
           </div>

@@ -5,6 +5,17 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { AuthContext } from '../context/AuthContext';
 import { staticProfiles } from '../data/staticData';
 
+// Add fake data for leaderboard
+const fakeLeaderboardData = [
+  { _id: '1', userId: 'user1', firstName: 'Alice', lastName: 'Smith', wins: 50, winRate: 75, totalGames: 67, puzzlesSolved: 30, tournamentParticipations: 10, rating: 2000, experience: 'advanced', grade: '12' },
+  { _id: '2', userId: 'user2', firstName: 'Bob', lastName: 'Johnson', wins: 45, winRate: 70, totalGames: 64, puzzlesSolved: 25, tournamentParticipations: 8, rating: 1950, experience: 'intermediate', grade: '11' },
+  { _id: '3', userId: 'user3', firstName: 'Charlie', lastName: 'Brown', wins: 40, winRate: 65, totalGames: 62, puzzlesSolved: 20, tournamentParticipations: 7, rating: 1900, experience: 'beginner', grade: '10' },
+  { _id: '4', userId: 'user4', firstName: 'Diana', lastName: 'Prince', wins: 35, winRate: 60, totalGames: 58, puzzlesSolved: 15, tournamentParticipations: 6, rating: 1850, experience: 'advanced', grade: '9' },
+  { _id: '5', userId: 'user5', firstName: 'Eve', lastName: 'Adams', wins: 30, winRate: 55, totalGames: 55, puzzlesSolved: 10, tournamentParticipations: 5, rating: 1800, experience: 'intermediate', grade: '8' },
+  { _id: '6', userId: 'alex123', firstName: 'Alex', lastName: 'Johnson', wins: 60, winRate: 80, totalGames: 75, puzzlesSolved: 40, tournamentParticipations: 12, rating: 2100, experience: 'advanced', grade: '12', image: 'https://via.placeholder.com/150' },
+  { _id: '7', userId: 'aom456', firstName: 'Aom', lastName: 'Tanaka', wins: 55, winRate: 78, totalGames: 70, puzzlesSolved: 35, tournamentParticipations: 10, rating: 2050, experience: 'intermediate', grade: '11', image: 'https://via.placeholder.com/150' },
+];
+
 export const Leaderboard = () => {
   const navigate = useNavigate();
   const { user, userType } = useContext(AuthContext);
@@ -35,8 +46,8 @@ export const Leaderboard = () => {
       try {
         setLoading(true);
         await new Promise(resolve => setTimeout(resolve, 500));
-        
-        let filtered = [...staticProfiles];
+
+        let filtered = [...fakeLeaderboardData];
 
         // Filter by category
         if (activeCategory === 'grade') {
@@ -54,7 +65,7 @@ export const Leaderboard = () => {
         } else if (leaderboardType === 'participations') {
           filtered.sort((a, b) => b.tournamentParticipations - a.tournamentParticipations);
         }
-        
+
         setLeaderboard(filtered.slice(0, 100));
       } catch (err) {
         setError('Failed to load leaderboard');
@@ -77,7 +88,7 @@ export const Leaderboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 pt-20">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 pt-28">
       {/* Hero Banner */}
       <div className="relative bg-gradient-to-r from-blue-900/40 via-slate-900 to-indigo-900/40 overflow-hidden py-20 mb-12 border-b-2 border-blue-500/30">
         <div className="absolute inset-0 opacity-5 pointer-events-none">
@@ -147,10 +158,12 @@ export const Leaderboard = () => {
                 onMouseEnter={() => setHoveredRank(index)}
                 onMouseLeave={() => setHoveredRank(null)}
               >
-                {/* Decorative background elements */}
-                <div className="absolute top-0 right-0 opacity-10 text-8xl">♔</div>
-                <div className="absolute bottom-0 left-0 opacity-10 text-8xl">♚</div>
-                
+                {/* Default Image */}
+                <img
+                  src={player.image || 'https://via.placeholder.com/150'}
+                  alt={`${player.firstName} ${player.lastName}`}
+                  className="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-white"
+                />
                 <div className="relative z-10">
                   <div className="text-6xl mb-4 animate-bounce" style={{ animationDelay: `${index * 0.2}s` }}>{medals[index]}</div>
                   <div className="text-4xl font-black mb-2">#{index + 1}</div>

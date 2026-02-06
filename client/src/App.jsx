@@ -6,14 +6,12 @@ import { Navbar, Footer } from './components/Layout';
 import { Loader } from './components/Common';
 import { Admin } from './pages/Admin';
 import { MemberAuth } from './pages/Auth/MemberAuth';
+import { Profile } from './pages/Profile';
 
 import { Home } from './pages/Home';
 import { About } from './pages/About';
-import { Join } from './pages/Join';
 import { Leaderboard } from './pages/Leaderboard';
 import { Competitions } from './pages/Competitions';
-import { CompetitionsMinimalAcademic } from './pages/Competitions_MinimalAcademic';
-import { CompetitionsChessboardCalendar } from './pages/Competitions_ChessboardCalendar';
 
 import './styles/globals.css';
 import './styles/chessAnimations.css';
@@ -80,12 +78,11 @@ function AppContent() {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/competitions" element={<Competitions />} />
-                <Route path="/competitions/minimal-academic" element={<CompetitionsMinimalAcademic />} />
-                <Route path="/competitions/chessboard-calendar" element={<CompetitionsChessboardCalendar />} />
                 <Route path="/leaderboard" element={<Leaderboard />} />
-                <Route path="/join" element={<Join />} />
+                <Route path="/join" element={<MemberAuth />} />
                 <Route path="/member-auth" element={<MemberAuth />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/profile/:userId" element={<Profile />} />
               </Routes>
             </main>
           </div>
