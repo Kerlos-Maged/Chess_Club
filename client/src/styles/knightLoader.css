@@ -1,0 +1,95 @@
+/* Knight Loader Styles */
+
+.knight-loader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #0B5FA5;
+}
+
+.knight-loader svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* First line - top crown */
+.knight-line-1 {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: drawLine1 3s ease-in-out infinite;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes drawLine1 {
+  0% {
+    stroke-dashoffset: 30;
+  }
+  25% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Second line - detail */
+.knight-line-2 {
+  stroke-dasharray: 6;
+  stroke-dashoffset: 6;
+  animation: drawLine2 3s ease-in-out infinite;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes drawLine2 {
+  0% {
+    stroke-dashoffset: 6;
+    opacity: 0;
+  }
+  35% {
+    stroke-dashoffset: 6;
+    opacity: 0;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* Third line - main body */
+.knight-line-3 {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: drawLine3 3s ease-in-out infinite;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes drawLine3 {
+  0% {
+    stroke-dashoffset: 50;
+  }
+  40% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Glow effect */
+.knight-loader {
+  filter: drop-shadow(0 0 1px rgba(11, 95, 165, 0.3));
+}
+
+.knight-loader:hover {
+  filter: drop-shadow(0 0 8px rgba(11, 95, 165, 0.8));
+  transition: filter 0.3s ease;
+}
+
+
