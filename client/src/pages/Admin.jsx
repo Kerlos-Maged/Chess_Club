@@ -309,7 +309,7 @@ export const Admin = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 flex">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 flex pt-28">
       {/* Sidebar */}
       <aside className="w-64 bg-gradient-to-b from-navy to-blue text-white shadow-xl">
         <div className="p-6 border-b border-white/20">

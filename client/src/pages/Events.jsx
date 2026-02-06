@@ -24,7 +24,7 @@ export const Events = () => {
   if (error) return <div className="text-center py-20 text-red-600">{error}</div>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50 to-white pt-28">
       <div className="max-w-6xl mx-auto px-4 py-20">
         <h1 className="text-5xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent mb-12">Upcoming Events</h1>
         

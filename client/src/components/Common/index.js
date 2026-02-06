@@ -1,5 +1,4 @@
 // Component exports
-export { ChessLogo } from './ChessLogo';
 export { ChessKnightLoader } from './ChessKnightLoader';
 export { Loader } from './Loader';
 export {
@@ -9,4 +8,4 @@ export {
   ChessSequenceAnimation,
   AnimatedChessIcon,
   ChessMovingAnimation
-} from './ChessAnimation';
+} from './ChessAnimations';

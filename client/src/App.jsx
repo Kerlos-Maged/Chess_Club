@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { Navbar, Footer } from './components/Layout';
@@ -9,7 +9,6 @@ import { MemberAuth } from './pages/Auth/MemberAuth';
 
 import { Home } from './pages/Home';
 import { About } from './pages/About';
-import { Events } from './pages/Events';
 import { Join } from './pages/Join';
 import { Leaderboard } from './pages/Leaderboard';
 import { Competitions } from './pages/Competitions';
@@ -19,6 +18,30 @@ import { CompetitionsChessboardCalendar } from './pages/Competitions_ChessboardC
 import './styles/globals.css';
 import './styles/chessAnimations.css';
 
+// Route transition tracker component
+function RouteTransition() {
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsTransitioning(true);
+    const timer = setTimeout(() => {
+      setIsTransitioning(false);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [location]);
+
+  if (isTransitioning) {
+    return (
+      <div className="fixed top-28 left-0 right-0 bottom-0 z-40 bg-slate-950 flex items-center justify-center pointer-events-auto">
+        <Loader />
+      </div>
+    );
+  }
+
+  return null;
+}
+
 function AppContent() {
   const { token } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +49,7 @@ function AppContent() {
   const isMemberAuthPage = window.location.pathname === '/member-auth';
 
   useEffect(() => {
-    // Simulate loading and then hide loader
+    // Initial page load
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
@@ -48,24 +71,26 @@ function AppContent() {
           <Route path="/member-auth" element={<MemberAuth />} />
         </Routes>
       ) : (
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/competitions" element={<Competitions />} />
-              <Route path="/competitions/minimal-academic" element={<CompetitionsMinimalAcademic />} />
-              <Route path="/competitions/chessboard-calendar" element={<CompetitionsChessboardCalendar />} />
-              <Route path="/leaderboard" element={<Leaderboard />} />
-              <Route path="/join" element={<Join />} />
-              <Route path="/member-auth" element={<MemberAuth />} />
-              <Route path="/admin" element={<Admin />} />
-            </Routes>
-          </main>
+        <>
+          <div className="flex flex-col min-h-screen">
+            <RouteTransition />
+            <Navbar />
+            <main className="flex-grow">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/competitions" element={<Competitions />} />
+                <Route path="/competitions/minimal-academic" element={<CompetitionsMinimalAcademic />} />
+                <Route path="/competitions/chessboard-calendar" element={<CompetitionsChessboardCalendar />} />
+                <Route path="/leaderboard" element={<Leaderboard />} />
+                <Route path="/join" element={<Join />} />
+                <Route path="/member-auth" element={<MemberAuth />} />
+                <Route path="/admin" element={<Admin />} />
+              </Routes>
+            </main>
+          </div>
           <Footer />
-        </div>
+        </>
       )}
     </Router>
   );

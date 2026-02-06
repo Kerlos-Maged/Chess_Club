@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import { fakeProfiles } from '../../data/fakeData';
 import { ChessKnightLoader } from '../../components/Common';
 
 export const MemberAuth = () => {
@@ -145,7 +144,7 @@ export const MemberAuth = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-navy via-blue to-navy flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-navy via-blue to-navy flex items-center justify-center px-4 py-12 pt-28">
       <div className="max-w-md w-full">
         {/* Logo/Header */}
         <div className="text-center mb-8">

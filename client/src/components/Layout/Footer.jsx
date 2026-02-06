@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChessLogo } from '../Common/ChessLogo';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-r from-slate-950 via-blue-950 to-slate-950 text-white mt-24 border-t-4 border-blue-600">
+    <footer className="bg-gradient-to-r from-slate-950 via-blue-950 to-slate-950 text-white border-t-4 border-blue-600">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid md:grid-cols-3 gap-12 mb-12">

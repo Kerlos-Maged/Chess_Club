@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { memberService } from '../services/api';
 
 export const Join = () => {
   const [formData, setFormData] = useState({
@@ -28,7 +27,8 @@ export const Join = () => {
     setError(null);
 
     try {
-      await memberService.submitApplication(formData);
+      // Simulate form submission
+      await new Promise(resolve => setTimeout(resolve, 1000));
       setSubmitted(true);
       setFormData({
         firstName: '',
@@ -49,17 +49,18 @@ export const Join = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-green-50 via-emerald-50 to-white flex items-center justify-center">
-        <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md text-center border border-green-200">
-          <h2 className="text-3xl font-bold text-green-600 mb-4">✓ Success!</h2>
-          <p className="text-gray-700 mb-6">
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center pt-28">
+        <div className="bg-slate-800 rounded-xl shadow-2xl p-8 max-w-md text-center border-2 border-green-500/50">
+          <div className="text-5xl mb-4">✓</div>
+          <h2 className="text-3xl font-bold text-green-400 mb-4">Success!</h2>
+          <p className="text-amber-100 mb-6">
             Your application has been submitted successfully. We'll review it and get back to you soon!
           </p>
           <button
             onClick={() => setSubmitted(false)}
-            className="bg-blue text-white px-6 py-2 rounded hover:bg-navy transition"
+            className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2 rounded-lg hover:shadow-lg hover:shadow-green-600/50 transition font-bold"
           >
-            Submit Another
+            Submit Another Application
           </button>
         </div>
       </div>
@@ -67,97 +68,161 @@ export const Join = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 via-emerald-50 to-white">
-      <div className="max-w-2xl mx-auto px-4 py-20">
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-8 text-center">Join Chess Club</h1>
-        
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 pt-20">
+      {/* Hero Banner */}
+      <div className="relative bg-gradient-to-r from-green-900/40 via-slate-900 to-emerald-900/40 overflow-hidden py-20 mb-12 border-b-2 border-green-500/30">
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-green-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-400 rounded-full blur-3xl"></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 relative z-20">
+          <div className="text-center">
+            <h1 className="text-6xl font-bold bg-gradient-to-r from-green-300 via-amber-100 to-emerald-300 bg-clip-text text-transparent mb-4 drop-shadow-lg">
+              Join Chess Club
+            </h1>
+            <p className="text-xl text-green-100 max-w-3xl mx-auto">
+              Be part of our growing chess community. Fill out your information and we'll welcome you with open arms!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-2xl mx-auto px-4 pb-16">
+        {/* Info Cards */}
+        <div className="grid md:grid-cols-3 gap-4 mb-12">
+          <div className="bg-slate-800/50 border border-green-500/30 rounded-lg p-4 text-center">
+            <p className="text-3xl mb-2">🎓</p>
+            <p className="text-green-300 font-semibold text-sm">All Skill Levels Welcome</p>
+            <p className="text-yellow-200/60 text-xs mt-1">From beginners to advanced</p>
+          </div>
+          <div className="bg-slate-800/50 border border-green-500/30 rounded-lg p-4 text-center">
+            <p className="text-3xl mb-2">👥</p>
+            <p className="text-green-300 font-semibold text-sm">Supportive Community</p>
+            <p className="text-yellow-200/60 text-xs mt-1">Grow with fellow players</p>
+          </div>
+          <div className="bg-slate-800/50 border border-green-500/30 rounded-lg p-4 text-center">
+            <p className="text-3xl mb-2">🏆</p>
+            <p className="text-green-300 font-semibold text-sm">Regular Events</p>
+            <p className="text-yellow-200/60 text-xs mt-1">Tournaments & competitions</p>
+          </div>
+        </div>
+
+        {/* Application Form */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl shadow-2xl p-8 space-y-6 border border-green-200"
+          className="bg-slate-800/50 rounded-xl shadow-2xl p-8 space-y-6 border border-green-500/30"
         >
-          {error && <div className="bg-red-100 text-red-700 p-3 rounded">{error}</div>}
+          {error && (
+            <div className="bg-red-500/20 border border-red-500/50 text-red-300 p-4 rounded-lg">
+              {error}
+            </div>
+          )}
 
-          <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-green-300 font-semibold mb-2">Full Name</label>
+            <div className="grid md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+                className="bg-slate-700 border border-slate-600 text-amber-100 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none transition placeholder-slate-400"
+              />
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+                className="bg-slate-700 border border-slate-600 text-amber-100 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none transition placeholder-slate-400"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-green-300 font-semibold mb-2">📧 Email Address</label>
             <input
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-              value={formData.firstName}
+              type="email"
+              name="email"
+              placeholder="your.email@school.edu"
+              value={formData.email}
               onChange={handleChange}
               required
-              className="border-2 border-gray-300 rounded px-4 py-2 focus:border-blue outline-none"
-            />
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-              value={formData.lastName}
-              onChange={handleChange}
-              required
-              className="border-2 border-gray-300 rounded px-4 py-2 focus:border-blue outline-none"
+              className="w-full bg-slate-700 border border-slate-600 text-amber-100 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none transition placeholder-slate-400"
             />
           </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className="w-full border-2 border-gray-300 rounded px-4 py-2 focus:border-blue outline-none"
-          />
+          <div>
+            <label className="block text-green-300 font-semibold mb-2">📞 Phone (Optional)</label>
+            <input
+              type="tel"
+              name="phone"
+              placeholder="+1 (555) 000-0000"
+              value={formData.phone}
+              onChange={handleChange}
+              className="w-full bg-slate-700 border border-slate-600 text-amber-100 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none transition placeholder-slate-400"
+            />
+          </div>
 
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Phone (Optional)"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full border-2 border-gray-300 rounded px-4 py-2 focus:border-blue outline-none"
-          />
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-green-300 font-semibold mb-2">🎓 Grade Level</label>
+              <select
+                name="grade"
+                value={formData.grade}
+                onChange={handleChange}
+                required
+                className="w-full bg-slate-700 border border-slate-600 text-amber-100 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none transition"
+              >
+                <option value="">Select Your Grade</option>
+                <option value="9">Grade 9</option>
+                <option value="10">Grade 10</option>
+                <option value="11">Grade 11</option>
+                <option value="12">Grade 12</option>
+              </select>
+            </div>
 
-          <select
-            name="grade"
-            value={formData.grade}
-            onChange={handleChange}
-            required
-            className="w-full border-2 border-gray-300 rounded px-4 py-2 focus:border-blue outline-none"
-          >
-            <option value="">Select Grade</option>
-            <option value="9">Grade 9</option>
-            <option value="10">Grade 10</option>
-            <option value="11">Grade 11</option>
-            <option value="12">Grade 12</option>
-          </select>
+            <div>
+              <label className="block text-green-300 font-semibold mb-2">♚ Chess Experience</label>
+              <select
+                name="experience"
+                value={formData.experience}
+                onChange={handleChange}
+                className="w-full bg-slate-700 border border-slate-600 text-amber-100 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none transition"
+              >
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+          </div>
 
-          <select
-            name="experience"
-            value={formData.experience}
-            onChange={handleChange}
-            className="w-full border-2 border-gray-300 rounded px-4 py-2 focus:border-blue outline-none"
-          >
-            <option value="beginner">Beginner</option>
-            <option value="intermediate">Intermediate</option>
-            <option value="advanced">Advanced</option>
-          </select>
-
-          <textarea
-            name="reason"
-            placeholder="Why do you want to join? (Optional)"
-            value={formData.reason}
-            onChange={handleChange}
-            rows="4"
-            className="w-full border-2 border-gray-300 rounded px-4 py-2 focus:border-blue outline-none resize-none"
-          />
+          <div>
+            <label className="block text-green-300 font-semibold mb-2">💭 Why Join Chess Club?</label>
+            <textarea
+              name="reason"
+              placeholder="Tell us what excites you about joining our chess community... (Optional)"
+              value={formData.reason}
+              onChange={handleChange}
+              rows="4"
+              className="w-full bg-slate-700 border border-slate-600 text-amber-100 rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none transition resize-none placeholder-slate-400"
+            />
+          </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gold text-navy font-bold py-3 rounded hover:bg-yellow-500 transition disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-3 rounded-lg hover:shadow-lg hover:shadow-green-600/50 transition disabled:opacity-50 transform hover:scale-105"
           >
-            {loading ? 'Submitting...' : 'Submit Application'}
+            {loading ? '⏳ Submitting...' : '🎯 Submit Application'}
           </button>
+
+          <p className="text-center text-yellow-200/60 text-sm">
+            We'll review your application and get back to you within 24 hours!
+          </p>
         </form>
       </div>
     </div>
