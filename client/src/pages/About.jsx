@@ -47,14 +47,14 @@ const teamMembers = [
 
 export const About = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-cyan-50 to-white pt-28">
-      <div className="max-w-6xl mx-auto px-4 py-20">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-cyan-50 to-white">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-20">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-4">
+        <div className="text-center mb-8 md:mb-16">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-3 md:mb-4">
             About Chess Club
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-sm md:text-base lg:text-xl text-gray-600 max-w-3xl mx-auto px-2">
             Building a vibrant chess community where players of all levels can learn, compete, and grow together.
           </p>
         </div>
@@ -111,70 +111,70 @@ export const About = () => {
         </div>
 
         {/* Team Members Section */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">👥 Meet Our Leadership Team</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mb-8 md:mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6 md:mb-8 text-center">👥 Meet Our Leadership Team</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {teamMembers.map((member) => (
-              <div key={member.id} className="bg-white rounded-lg shadow-lg p-6 border-t-4 border-blue-500 hover:shadow-xl transition transform hover:scale-105">
-                <div className="text-5xl text-center mb-4">{member.image}</div>
-                <h3 className="text-xl font-bold text-gray-800 text-center mb-1">{member.name}</h3>
-                <p className="text-sm text-blue-600 font-semibold text-center mb-3">{member.role}</p>
-                <p className="text-gray-600 text-sm text-center">{member.bio}</p>
+              <div key={member.id} className="bg-white rounded-lg shadow-lg p-4 md:p-6 border-t-4 border-blue-500 hover:shadow-xl transition transform hover:scale-105">
+                <div className="text-4xl md:text-5xl text-center mb-3 md:mb-4">{member.image}</div>
+                <h3 className="text-lg md:text-xl font-bold text-gray-800 text-center mb-1">{member.name}</h3>
+                <p className="text-xs md:text-sm text-blue-600 font-semibold text-center mb-2 md:mb-3">{member.role}</p>
+                <p className="text-xs md:text-sm text-gray-600 text-center">{member.bio}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Join Us Section */}
-        <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg shadow-lg p-8 mb-8 border-l-4 border-purple-600">
-          <h2 className="text-2xl font-bold text-purple-700 mb-4">💪 Join Us On This Journey!</h2>
-          <p className="text-gray-700 leading-relaxed mb-4">
+        <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg shadow-lg p-4 md:p-8 mb-4 md:mb-8 border-l-4 border-purple-600">
+          <h2 className="text-xl md:text-2xl font-bold text-purple-700 mb-2 md:mb-4">💪 Join Us On This Journey!</h2>
+          <p className="text-sm md:text-base text-gray-700 leading-relaxed mb-2 md:mb-4">
             We're looking for members of all skill levels—from complete beginners to experienced players. 
             This is an opportunity to be part of building something new and special at our school. 
             Help us establish a strong chess tradition!
           </p>
-          <p className="text-gray-700 font-semibold">
+          <p className="text-sm md:text-base text-gray-700 font-semibold">
             👉 Ready to join? Visit our Join page or contact any leadership team member directly!
           </p>
         </div>
 
         {/* Contact Section */}
-        <div className="bg-gradient-to-br from-red-100 to-orange-100 rounded-lg shadow-lg p-8 mb-8 border-l-4 border-red-600">
-          <h2 className="text-2xl font-bold text-red-700 mb-4">📞 Get In Touch</h2>
-          <div className="grid md:grid-cols-2 gap-6 text-gray-700">
+        <div className="bg-gradient-to-br from-red-100 to-orange-100 rounded-lg shadow-lg p-4 md:p-8 mb-4 md:mb-8 border-l-4 border-red-600">
+          <h2 className="text-xl md:text-2xl font-bold text-red-700 mb-3 md:mb-4">📞 Get In Touch</h2>
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6 text-gray-700">
             <div>
-              <p className="font-semibold mb-2">📧 Email</p>
-              <p className="text-sm">chesclub@school.edu</p>
+              <p className="font-semibold mb-1 md:mb-2 text-sm md:text-base">📧 Email</p>
+              <p className="text-xs md:text-sm">chesclub@school.edu</p>
             </div>
             <div>
-              <p className="font-semibold mb-2">📍 Meeting Location</p>
-              <p className="text-sm">Room 205, Every Monday & Thursday 3:30 PM</p>
+              <p className="font-semibold mb-1 md:mb-2 text-sm md:text-base">📍 Meeting Location</p>
+              <p className="text-xs md:text-sm">Room 205, Every Monday & Thursday 3:30 PM</p>
             </div>
           </div>
-          <p className="text-gray-600 text-sm font-medium mt-4 pt-4 border-t border-red-300">
+          <p className="text-gray-600 text-xs md:text-sm font-medium mt-3 md:mt-4 pt-3 md:pt-4 border-t border-red-300">
             Have questions or suggestions? Reach out to any of our leadership team members or join us at our next meeting!
           </p>
         </div>
 
         {/* Quick Stats Section */}
-        <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-lg shadow-lg p-8 mb-8 text-white">
-          <h2 className="text-2xl font-bold mb-6 text-center">📊 By The Numbers</h2>
-          <div className="grid md:grid-cols-4 gap-4 text-center">
+        <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-lg shadow-lg p-4 md:p-8 mb-4 md:mb-8 text-white">
+          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-center">📊 By The Numbers</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 text-center">
             <div>
-              <p className="text-3xl font-bold text-blue-400">50+</p>
-              <p className="text-sm text-gray-300">Active Members</p>
+              <p className="text-2xl md:text-3xl font-bold text-blue-400">50+</p>
+              <p className="text-xs md:text-sm text-gray-300">Active Members</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-cyan-400">12</p>
-              <p className="text-sm text-gray-300">Events Per Year</p>
+              <p className="text-2xl md:text-3xl font-bold text-cyan-400">12</p>
+              <p className="text-xs md:text-sm text-gray-300">Events Per Year</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-green-400">4</p>
-              <p className="text-sm text-gray-300">Skill Levels</p>
+              <p className="text-2xl md:text-3xl font-bold text-green-400">4</p>
+              <p className="text-xs md:text-sm text-gray-300">Skill Levels</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-amber-400">100%</p>
-              <p className="text-sm text-gray-300">Fun & Learning</p>
+              <p className="text-2xl md:text-3xl font-bold text-amber-400">100%</p>
+              <p className="text-xs md:text-sm text-gray-300">Fun & Learning</p>
             </div>
           </div>
         </div>

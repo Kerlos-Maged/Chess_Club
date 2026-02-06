@@ -88,17 +88,17 @@ export const Leaderboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 pt-28">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 pt-16 md:pt-20 pb-8 md:pb-16 px-4 md:px-6">
       {/* Hero Banner */}
-      <div className="relative bg-gradient-to-r from-blue-900/40 via-slate-900 to-indigo-900/40 overflow-hidden py-20 mb-12 border-b-2 border-blue-500/30">
+      <div className="relative bg-gradient-to-r from-blue-900/40 via-slate-900 to-indigo-900/40 overflow-hidden py-12 md:py-20 mb-8 md:mb-12 border-b-2 border-blue-500/30 rounded-lg">
         <div className="absolute inset-0 opacity-5 pointer-events-none">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-400 rounded-full blur-3xl"></div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 relative z-20">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-20">
           <div className="text-center">
-            <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-300 via-amber-100 to-indigo-300 bg-clip-text text-transparent mb-4 drop-shadow-lg">Elite Rankings</h1>
-            <p className="text-xl text-amber-100 max-w-3xl mx-auto">
+            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold bg-gradient-to-r from-blue-300 via-amber-100 to-indigo-300 bg-clip-text text-transparent mb-2 md:mb-4 drop-shadow-lg">Elite Rankings</h1>
+            <p className="text-base md:text-lg lg:text-xl text-amber-100 max-w-3xl mx-auto">
               Compete against the best players in our chess community. Rankings are updated based on performance metrics.
             </p>
           </div>

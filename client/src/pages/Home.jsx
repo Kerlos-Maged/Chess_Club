@@ -70,7 +70,7 @@ export const Home = () => {
   );
 
   return (
-    <div className="min-h-screen bg-white pt-28">
+    <div className="min-h-screen bg-white">
       {/* Hero Section with Chess Board Background & Chess Motif */}
       <section className="relative bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 text-white overflow-hidden">
         {/* Floating Chess Pieces Motif - Animated */}
@@ -124,30 +124,30 @@ export const Home = () => {
         {/* Subtle chess piece overlay */}
         <div className="absolute top-1/2 left-1/4 text-6xl opacity-10 pointer-events-none select-none">♕</div>
         
-        <div className="relative h-screen max-w-7xl mx-auto px-6 flex items-center justify-center z-10">
-          <div className="w-full md:w-3/4 text-center animate-fade-in">
-            <div className="inline-block bg-yellow-600/30 px-4 py-2 rounded-full mb-6 border border-yellow-500/60">
-              <span className="text-yellow-300 font-bold text-sm">♔ Official School Club</span>
+        <div className="relative min-h-screen max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-center z-10">
+          <div className="w-full md:w-3/4 text-center animate-fade-in py-20 md:py-0">
+            <div className="inline-block bg-yellow-600/30 px-3 md:px-4 py-1 md:py-2 rounded-full mb-4 md:mb-6 border border-yellow-500/60">
+              <span className="text-yellow-300 font-bold text-xs md:text-sm">♔ Official School Club</span>
             </div>
-            <h1 className="text-6xl md:text-7xl font-bold mb-6 leading-tight drop-shadow-2xl text-amber-100">
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight drop-shadow-2xl text-amber-100">
               October Chess Club
             </h1>
-            <p className="text-2xl text-yellow-100 mb-4 leading-relaxed font-semibold drop-shadow-lg">
+            <p className="text-lg md:text-xl lg:text-2xl text-yellow-100 mb-3 md:mb-4 leading-relaxed font-semibold drop-shadow-lg">
               Where Every Move Matters
             </p>
-            <p className="text-lg text-gray-50 mb-10 leading-relaxed drop-shadow-lg max-w-2xl mx-auto">
+            <p className="text-sm md:text-base lg:text-lg text-gray-50 mb-8 md:mb-10 leading-relaxed drop-shadow-lg max-w-2xl mx-auto px-2">
               Join our vibrant chess community. Compete, learn, and connect with passionate players. Every skill level is welcome—let's make every game memorable!
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4 justify-center">
               <a
                 href="#join"
-                className="bg-gradient-to-r from-blue-500 to-blue-400 text-white font-bold px-8 py-4 rounded-lg hover:from-blue-400 hover:to-blue-300 transition shadow-lg text-lg transform hover:scale-105 border border-blue-300"
+                className="bg-gradient-to-r from-blue-500 to-blue-400 text-white font-bold px-6 md:px-8 py-3 md:py-4 rounded-lg hover:from-blue-400 hover:to-blue-300 transition shadow-lg text-base md:text-lg transform hover:scale-105 border border-blue-300 w-full sm:w-auto text-center"
               >
                 Join Now
               </a>
               <a
                 href="/competitions"
-                className="bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold px-8 py-4 rounded-lg hover:from-blue-500 hover:to-blue-400 transition text-lg transform hover:scale-105 border-2 border-yellow-500 shadow-lg"
+                className="bg-gradient-to-r from-blue-600 to-blue-500 text-white font-bold px-6 md:px-8 py-3 md:py-4 rounded-lg hover:from-blue-500 hover:to-blue-400 transition text-base md:text-lg transform hover:scale-105 border-2 border-yellow-500 shadow-lg w-full sm:w-auto text-center"
               >
                 View Tournaments
               </a>
@@ -157,19 +157,19 @@ export const Home = () => {
       </section>
 
       {/* About Section - Chess Touch */}
-      <section className="relative bg-slate-950 py-24 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+      <section className="relative bg-slate-950 py-12 md:py-24 overflow-hidden">
+        <div className="relative max-w-7xl mx-auto px-4 md:px-6">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Left Content */}
             <div>
-            <div className="inline-block bg-gradient-to-r from-yellow-400/20 to-amber-400/20 px-4 py-2 rounded-full mb-6 border border-yellow-400/50">
-              <span className="text-yellow-300 font-bold text-sm">♔ Newly Founded Club</span>
+            <div className="inline-block bg-gradient-to-r from-yellow-400/20 to-amber-400/20 px-3 md:px-4 py-1 md:py-2 rounded-full mb-4 md:mb-6 border border-yellow-400/50">
+              <span className="text-yellow-300 font-bold text-xs md:text-sm">♔ Newly Founded Club</span>
               </div>
-              <h2 className="text-5xl md:text-6xl font-bold text-amber-100 mb-6">About October Chess Club</h2>
-              <p className="text-lg text-slate-300 mb-6 leading-relaxed font-medium">
+              <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold text-amber-100 mb-4 md:mb-6">About October Chess Club</h2>
+              <p className="text-sm md:text-base lg:text-lg text-slate-300 mb-4 md:mb-6 leading-relaxed font-medium">
                 October Chess Club is more than a club—it's a movement. We foster critical thinking, strategic planning, and lasting friendships through chess.
               </p>
-              <p className="text-lg text-slate-300 mb-8 leading-relaxed font-medium">
+              <p className="text-sm md:text-base lg:text-lg text-slate-300 mb-6 md:mb-8 leading-relaxed font-medium">
                 Beginners and experts alike are welcome. Join us for tournaments, training, and social events. Discover your next great move!
               </p>
               <Link
@@ -181,10 +181,10 @@ export const Home = () => {
             </div>
 
             {/* Right Image */}
-            <div className="flex justify-center relative">
+            <div className="flex justify-center relative mt-8 md:mt-0">
               {/* Chess piece overlay */}
-              <div className="absolute -top-8 -right-8 text-5xl opacity-15 pointer-events-none select-none">♖</div>
-              <div className="relative w-full max-w-lg h-96 rounded-2xl overflow-hidden shadow-2xl border border-slate-700/40 hover:shadow-3xl transition">
+              <div className="absolute -top-6 md:-top-8 -right-6 md:-right-8 text-4xl md:text-5xl opacity-15 pointer-events-none select-none">♖</div>
+              <div className="relative w-full max-w-lg h-48 md:h-96 rounded-2xl overflow-hidden shadow-2xl border border-slate-700/40 hover:shadow-3xl transition">
                 <img 
                   src="/school.jpeg" 
                   alt="October Chess Club" 
@@ -198,25 +198,25 @@ export const Home = () => {
       </section>
 
       {/* Why Join Section */}
-      <section className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-100 py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-100 py-12 md:py-20 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-600/20 to-transparent"></div>
         </div>
         
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <h2 className="text-5xl font-bold mb-6 text-amber-100">Why Join Us?</h2>
-          <div className="grid md:grid-cols-3 gap-8 mt-12">
-            <div className="space-y-3">
-              <h3 className="text-2xl font-bold mb-4 text-slate-100">Master Your Game</h3>
-              <p className="text-slate-300 font-medium leading-relaxed">Learn from experienced players, discover new strategies, and develop your tactical vision.</p>
+        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 text-center">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-amber-100">Why Join Us?</h2>
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 mt-8 md:mt-12">
+            <div className="space-y-2 md:space-y-3">
+              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-slate-100">Master Your Game</h3>
+              <p className="text-sm md:text-base text-slate-300 font-medium leading-relaxed">Learn from experienced players, discover new strategies, and develop your tactical vision.</p>
             </div>
-            <div className="space-y-3">
-              <h3 className="text-2xl font-bold mb-4 text-slate-100">Build Friendships</h3>
-              <p className="text-slate-300 font-medium leading-relaxed">Connect with fellow enthusiasts, share strategies, and create lasting memories around the board.</p>
+            <div className="space-y-2 md:space-y-3">
+              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-slate-100">Build Friendships</h3>
+              <p className="text-sm md:text-base text-slate-300 font-medium leading-relaxed">Connect with fellow enthusiasts, share strategies, and create lasting memories around the board.</p>
             </div>
-            <div className="space-y-3">
-              <h3 className="text-2xl font-bold mb-4 text-slate-100">Compete & Win</h3>
-              <p className="text-slate-300 font-medium leading-relaxed">Face off in tournaments, prove your skill, and earn recognition in our vibrant community.</p>
+            <div className="space-y-2 md:space-y-3">
+              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-4 text-slate-100">Compete & Win</h3>
+              <p className="text-sm md:text-base text-slate-300 font-medium leading-relaxed">Face off in tournaments, prove your skill, and earn recognition in our vibrant community.</p>
             </div>
           </div>
         </div>
@@ -268,46 +268,44 @@ export const Home = () => {
           }
         `}</style>
 
-        <div className="relative max-w-7xl mx-auto px-6">
-
-
-          <div className="text-center mb-12">
+        <div className="relative max-w-7xl mx-auto px-4 md:px-6">
+          <div className="text-center mb-8 md:mb-12">
             {/* Chess piece badge */}
-            <div className="absolute left-0 top-0 text-6xl opacity-10 pointer-events-none select-none">♙</div>
-            <div className="inline-block bg-gradient-to-r from-yellow-400/20 to-amber-400/20 px-4 py-2 rounded-full mb-4 border border-yellow-400/50">
-              <span className="text-yellow-300 font-bold text-sm">♖ TOURNAMENTS & EVENTS</span>
+            <div className="absolute left-0 top-0 text-5xl md:text-6xl opacity-10 pointer-events-none select-none">♙</div>
+            <div className="inline-block bg-gradient-to-r from-yellow-400/20 to-amber-400/20 px-3 md:px-4 py-1 md:py-2 rounded-full mb-3 md:mb-4 border border-yellow-400/50">
+              <span className="text-yellow-300 font-bold text-xs md:text-sm">♖ TOURNAMENTS & EVENTS</span>
             </div>
-            <h2 className="text-5xl md:text-6xl font-bold mb-4 text-amber-100">Events Made</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold mb-3 md:mb-4 text-amber-100">Events Made</h2>
           </div>
 
           {/* Events Grid - Card Design */}
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-4 md:gap-6 md:grid-cols-3">
             {eventsList.map((ev) => (
               <div
                 key={ev.id}
-                className="group bg-gradient-to-br from-slate-900/60 to-slate-900/40 rounded-2xl p-4 border border-slate-700/30 hover:shadow-2xl transform hover:-translate-y-1 transition"
+                className="group bg-gradient-to-br from-slate-900/60 to-slate-900/40 rounded-lg md:rounded-2xl p-3 md:p-4 border border-slate-700/30 hover:shadow-2xl transform hover:-translate-y-1 transition"
               >
-                <div className="relative overflow-hidden rounded-xl h-44 mb-4">
+                <div className="relative overflow-hidden rounded-lg h-32 md:h-44 mb-3 md:mb-4">
                   <ImagePlaceholder title={ev.title} subtitle={ev.date} />
                   {/* Overlay chess piece */}
-                  <div className="absolute bottom-2 right-2 text-4xl opacity-10 pointer-events-none select-none">{ev.type === 'tournament' ? '♔' : ev.type === 'training' ? '♞' : '♙'}</div>
+                  <div className="absolute bottom-2 right-2 text-3xl md:text-4xl opacity-10 pointer-events-none select-none">{ev.type === 'tournament' ? '♔' : ev.type === 'training' ? '♞' : '♙'}</div>
                 </div>
 
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-4">
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-amber-100">{ev.title}</h3>
-                    <p className="text-slate-300 text-sm mt-1 line-clamp-3">{ev.summary}</p>
+                    <h3 className="text-lg md:text-xl font-bold text-amber-100">{ev.title}</h3>
+                    <p className="text-slate-300 text-xs md:text-sm mt-1 line-clamp-2 md:line-clamp-3">{ev.summary}</p>
                   </div>
 
                   <div className="text-right">
-                    <div className="inline-block px-3 py-1 rounded-full text-sm font-semibold text-slate-800 bg-amber-300/80">{ev.type}</div>
-                    <p className="text-sm text-slate-400 mt-2">{ev.time}</p>
+                    <div className="inline-block px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs md:text-sm font-semibold text-slate-800 bg-amber-300/80">{ev.type}</div>
+                    <p className="text-xs md:text-sm text-slate-400 mt-1 md:mt-2">{ev.time}</p>
                   </div>
                 </div>
 
-                <div className="mt-4 flex items-center justify-between gap-3">
-                  <button onClick={() => openModal(ev)} className="px-4 py-2 rounded-lg bg-amber-400 text-slate-900 font-semibold hover:brightness-95 transition">Details</button>
-                  <button className="px-4 py-2 rounded-lg bg-transparent border border-slate-700 text-white hover:bg-slate-800/30 transition">Register</button>
+                <div className="mt-3 md:mt-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+                  <button onClick={() => openModal(ev)} className="w-full sm:flex-1 px-3 md:px-4 py-1.5 md:py-2 rounded-lg bg-amber-400 text-slate-900 font-semibold text-sm md:text-base hover:brightness-95 transition">Details</button>
+                  <button className="w-full sm:flex-1 px-3 md:px-4 py-1.5 md:py-2 rounded-lg bg-transparent border border-slate-700 text-white text-sm md:text-base hover:bg-slate-800/30 transition">Register</button>
                 </div>
               </div>
             ))}
@@ -333,101 +331,101 @@ export const Home = () => {
       </section>
 
       {/* Contact Form Section */}
-      <section ref={joinRef} className="relative bg-gradient-to-b from-slate-800 via-slate-900 to-slate-800 text-white py-32 scroll-animate overflow-hidden">
+      <section ref={joinRef} className="relative bg-gradient-to-b from-slate-800 via-slate-900 to-slate-800 text-white py-12 md:py-32 scroll-animate overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
         </div>
         
-        <div className="relative max-w-6xl mx-auto px-6 animate-fade-in-up">
-          <div className="text-center mb-12">
-            <h2 className="text-5xl text-amber-100  md:text-6xl font-bold mb-4 ">Contact Us</h2>
-            <p className="text-xl text-slate-300 leading-relaxed">
+        <div className="relative max-w-6xl mx-auto px-4 md:px-6 animate-fade-in-up">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-6xl text-amber-100  font-bold mb-3 md:mb-4">Contact Us</h2>
+            <p className="text-sm md:text-base lg:text-xl text-slate-300 leading-relaxed">
               Questions, feedback, or just want to say hello? Reach out and we'll get back to you soon!
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-16 items-start">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-start">
             {/* Contact Information - Left Side - Prestigious Design */}
-            <div className="space-y-12">
+            <div className="space-y-8 md:space-y-12">
               <div>
-                <h3 className="text-4xl font-bold text-white mb-2">Contact Information</h3>
-                <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-amber-400 rounded-full"></div>
+                <h3 className="text-2xl md:text-4xl font-bold text-white mb-2">Contact Information</h3>
+                <div className="w-20 md:w-24 h-1 bg-gradient-to-r from-blue-400 to-amber-400 rounded-full"></div>
               </div>
               
               {/* Phone */}
-              <div className="border-l-4 border-blue-400 pl-6">
-                <p className="text-sm text-blue-300 font-semibold uppercase tracking-wider mb-2">Phone</p>
-                <a href="tel:+1234567890" className="text-2xl text-white font-bold hover:text-blue-300 transition">
+              <div className="border-l-4 border-blue-400 pl-4 md:pl-6">
+                <p className="text-xs md:text-sm text-blue-300 font-semibold uppercase tracking-wider mb-2">Phone</p>
+                <a href="tel:+1234567890" className="text-lg md:text-2xl text-white font-bold hover:text-blue-300 transition">
                   +1 (234) 567-890
                 </a>
-                <p className="text-slate-400 text-sm mt-2">Available Mon - Fri, 3:00 PM - 6:00 PM</p>
+                <p className="text-slate-400 text-xs md:text-sm mt-2">Available Mon - Fri, 3:00 PM - 6:00 PM</p>
               </div>
 
               {/* Email */}
-              <div className="border-l-4 border-amber-400 pl-6">
-                <p className="text-sm text-amber-300 font-semibold uppercase tracking-wider mb-2">Email</p>
-                <a href="mailto:chess@school.com" className="text-2xl text-white font-bold hover:text-amber-300 transition break-all">
+              <div className="border-l-4 border-amber-400 pl-4 md:pl-6">
+                <p className="text-xs md:text-sm text-amber-300 font-semibold uppercase tracking-wider mb-2">Email</p>
+                <a href="mailto:chess@school.com" className="text-lg md:text-2xl text-white font-bold hover:text-amber-300 transition break-all">
                   chess@school.com
                 </a>
-                <p className="text-slate-400 text-sm mt-2">We respond within 24 hours</p>
+                <p className="text-slate-400 text-xs md:text-sm mt-2">We respond within 24 hours</p>
               </div>
 
               {/* Location */}
-              <div className="border-l-4 border-slate-300 pl-6">
-                <p className="text-sm text-slate-300 font-semibold uppercase tracking-wider mb-2">Location</p>
-                <p className="text-xl text-white font-bold">October School</p>
-                <p className="text-slate-400 text-sm mt-1">Chess Club Room</p>
+              <div className="border-l-4 border-slate-300 pl-4 md:pl-6">
+                <p className="text-xs md:text-sm text-slate-300 font-semibold uppercase tracking-wider mb-2">Location</p>
+                <p className="text-lg md:text-xl text-white font-bold">October School</p>
+                <p className="text-slate-400 text-xs md:text-sm mt-1">Chess Club Room</p>
               </div>
             </div>
 
             {/* Contact Form - Right Side */}
-            <div className="bg-gradient-to-br from-slate-700/30 to-slate-800/30 backdrop-blur-sm rounded-3xl shadow-2xl p-12 border border-slate-600/20">
-              <h3 className="text-3xl font-bold text-white mb-8">Send us a Message</h3>
-              <form className="space-y-6">
+            <div className="bg-gradient-to-br from-slate-700/30 to-slate-800/30 backdrop-blur-sm rounded-2xl md:rounded-3xl shadow-2xl p-6 md:p-12 border border-slate-600/20 mt-8 md:mt-0">
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 md:mb-8">Send us a Message</h3>
+              <form className="space-y-4 md:space-y-6">
                 <div>
-                  <label className="block text-white font-semibold mb-3">Full Name</label>
+                  <label className="block text-white font-semibold mb-2 md:mb-3 text-sm md:text-base">Full Name</label>
                   <input
                     type="text"
                     placeholder="Your name"
-                    className="w-full px-4 py-3 border-b-2 border-slate-500 hover:border-blue-400 focus:border-blue-300 focus:outline-none transition text-white bg-transparent placeholder-slate-500 font-medium"
+                    className="w-full px-3 md:px-4 py-2 md:py-3 border-b-2 border-slate-500 hover:border-blue-400 focus:border-blue-300 focus:outline-none transition text-white bg-transparent placeholder-slate-500 font-medium text-sm md:text-base"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-white font-semibold mb-3">Email Address</label>
+                  <label className="block text-white font-semibold mb-2 md:mb-3 text-sm md:text-base">Email Address</label>
                   <input
                     type="email"
                     placeholder="your@email.com"
-                    className="w-full px-4 py-3 border-b-2 border-slate-500 hover:border-blue-400 focus:border-blue-300 focus:outline-none transition text-white bg-transparent placeholder-slate-500 font-medium"
+                    className="w-full px-3 md:px-4 py-2 md:py-3 border-b-2 border-slate-500 hover:border-blue-400 focus:border-blue-300 focus:outline-none transition text-white bg-transparent placeholder-slate-500 font-medium text-sm md:text-base"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-white font-semibold mb-3">Subject</label>
+                  <label className="block text-white font-semibold mb-2 md:mb-3 text-sm md:text-base">Subject</label>
                   <input
                     type="text"
                     placeholder="What's this about?"
-                    className="w-full px-4 py-3 border-b-2 border-slate-500 hover:border-blue-400 focus:border-blue-300 focus:outline-none transition text-white bg-transparent placeholder-slate-500 font-medium"
+                    className="w-full px-3 md:px-4 py-2 md:py-3 border-b-2 border-slate-500 hover:border-blue-400 focus:border-blue-300 focus:outline-none transition text-white bg-transparent placeholder-slate-500 font-medium text-sm md:text-base"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-white font-semibold mb-3">Message</label>
+                  <label className="block text-white font-semibold mb-2 md:mb-3 text-sm md:text-base">Message</label>
                   <textarea
                     placeholder="Your message here..."
                     rows="4"
-                    className="w-full px-4 py-3 border-b-2 border-slate-500 hover:border-blue-400 focus:border-blue-300 focus:outline-none transition text-white bg-transparent placeholder-slate-500 font-medium resize-none"
+                    className="w-full px-3 md:px-4 py-2 md:py-3 border-b-2 border-slate-500 hover:border-blue-400 focus:border-blue-300 focus:outline-none transition text-white bg-transparent placeholder-slate-500 font-medium resize-none text-sm md:text-base"
                     required
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold px-8 py-4 rounded-lg transition text-lg transform hover:scale-105 shadow-lg mt-8"
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-bold px-6 md:px-8 py-3 md:py-4 rounded-lg transition text-base md:text-lg transform hover:scale-105 shadow-lg mt-6 md:mt-8"
                 >
                   Send Message
                 </button>

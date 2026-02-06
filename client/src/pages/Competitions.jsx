@@ -121,7 +121,7 @@ export const Competitions = () => {
   const isRegistered = (tournamentId) => registeredTournaments.includes(tournamentId);
 
   return (
-    <div className="min-h-screen bg-white pt-28">
+    <div className="min-h-screen bg-white pt-16 md:pt-20 px-4 md:px-6">
       {/* Minimal Hero Section */}
       <div className="relative bg-slate-900 pt-12 pb-16">
         <div className="max-w-6xl mx-auto px-6">

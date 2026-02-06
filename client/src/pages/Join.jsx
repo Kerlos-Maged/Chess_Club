@@ -49,7 +49,7 @@ export const Join = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center pt-28">
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center pt-16 md:pt-20 px-4 md:px-6">
         <div className="bg-slate-800 rounded-xl shadow-2xl p-8 max-w-md text-center border-2 border-green-500/50">
           <div className="text-5xl mb-4">✓</div>
           <h2 className="text-3xl font-bold text-green-400 mb-4">Success!</h2>
@@ -74,7 +74,7 @@ export const Join = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 pt-20">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 pt-16 md:pt-20 px-4 md:px-6">
       {/* Hero Banner */}
       <div className="relative bg-gradient-to-r from-green-900/40 via-slate-900 to-emerald-900/40 overflow-hidden py-20 mb-12 border-b-2 border-green-500/30">
         <div className="absolute inset-0 opacity-5 pointer-events-none">

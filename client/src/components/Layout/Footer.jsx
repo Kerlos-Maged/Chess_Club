@@ -7,8 +7,8 @@ export const Footer = () => {
   return (
     <footer className="bg-gradient-to-r from-slate-950 via-blue-950 to-slate-950 text-white border-t-4 border-blue-600">
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-3 gap-12 mb-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-16">
+        <div className="grid md:grid-cols-3 gap-6 md:gap-12 mb-8 md:mb-12">
           {/* Brand Section */}
           <div className="flex flex-col items-start">
             <img 
