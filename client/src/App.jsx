@@ -12,7 +12,6 @@ import { About } from './pages/About';
 import { Events } from './pages/Events';
 import { Join } from './pages/Join';
 import { Contact } from './pages/Contact';
-import { Test } from './pages/Test';
 import { Leaderboard } from './pages/Leaderboard';
 import { Competitions } from './pages/Competitions';
 import { CompetitionsMinimalAcademic } from './pages/Competitions_MinimalAcademic';
@@ -65,7 +64,6 @@ function AppContent() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/member-auth" element={<MemberAuth />} />
               <Route path="/admin" element={<Admin />} />
-              <Route path="/test" element={<Test />} />
             </Routes>
           </main>
           <Footer />

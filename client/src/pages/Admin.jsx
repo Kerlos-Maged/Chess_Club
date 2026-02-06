@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fakeProfiles, fakeAdmin, fakeTournaments } from '../data/fakeData';
 import { AuthContext } from '../context/AuthContext';
 import { ChessKnightLoader } from '../components/Common';
 

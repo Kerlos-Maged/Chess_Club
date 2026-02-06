@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { eventService } from '../services/api';
 
 export const Events = () => {
   const [events, setEvents] = useState([]);
