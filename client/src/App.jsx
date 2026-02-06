@@ -11,7 +11,6 @@ import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { Events } from './pages/Events';
 import { Join } from './pages/Join';
-import { Contact } from './pages/Contact';
 import { Leaderboard } from './pages/Leaderboard';
 import { Competitions } from './pages/Competitions';
 import { CompetitionsMinimalAcademic } from './pages/Competitions_MinimalAcademic';
@@ -61,7 +60,6 @@ function AppContent() {
               <Route path="/competitions/chessboard-calendar" element={<CompetitionsChessboardCalendar />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/join" element={<Join />} />
-              <Route path="/contact" element={<Contact />} />
               <Route path="/member-auth" element={<MemberAuth />} />
               <Route path="/admin" element={<Admin />} />
             </Routes>
